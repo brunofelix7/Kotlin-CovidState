@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Kotlin-CovidState</string>
+    <!-- No do aplicativo -->
+    <string name="app_name">COVID State</string>
 </resources>
