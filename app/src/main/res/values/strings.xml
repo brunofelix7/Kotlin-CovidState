@@ -1,4 +1,13 @@
 <resources>
     <!-- No do aplicativo -->
     <string name="app_name">COVID State</string>
+
+    <!-- Labels -->
+    <string name="label_default_value">0.0</string>
+    <string name="label_confirmed">Confirmados</string>
+    <string name="label_critical">Críticos</string>
+    <string name="label_death">Mortes</string>
+    <string name="label_recovered">Recuperados</string>
+    <string name="label_recovered_rate">Recuperados %</string>
+    <string name="label_rate_death">Mortes %</string>
 </resources>
