@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="model"
+            type="com.brunofelixdev.kotlincovidstate.model.CountryData" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="4dp">
+
+            <TextView
+                android:id="@+id/country"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:lines="2"
+                android:text="@{model.country}"
+                android:theme="@style/Theme.TextLightDark" />
+
+            <TextView
+                android:id="@+id/confirmed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:gravity="end"
+                android:lines="1"
+                android:text="@{model.formattedNumber(model.confirmed)}"
+                android:textSize="11sp"
+                android:theme="@style/Theme.TextLightDark" />
+
+            <TextView
+                android:id="@+id/deaths"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:gravity="end"
+                android:text="@{model.formattedNumber(model.deaths)}"
+                android:textColor="@color/red700"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/recovered"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:gravity="end"
+                android:text="@{model.formattedNumber(model.recovered)}"
+                android:textColor="@color/green700"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>
+

@@ -1,5 +1,6 @@
 package com.brunofelixdev.kotlincovidstate.data.api
 
+import com.brunofelixdev.kotlincovidstate.model.CountryData
 import com.brunofelixdev.kotlincovidstate.model.WorldData
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -24,5 +25,11 @@ interface MyApi {
             @Header("x-rapidapi-host") host: String,
             @Header("x-rapidapi-key") apiKey: String
     ) : Call<List<WorldData>>
+
+    @GET("country/all")
+    fun fetchAllCountries(
+            @Header("x-rapidapi-host") host: String,
+            @Header("x-rapidapi-key") apiKey: String
+    ) : Call<List<CountryData>>
 
 }

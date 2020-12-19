@@ -3,7 +3,7 @@ package com.brunofelixdev.kotlincovidstate.data.api
 import com.brunofelixdev.kotlincovidstate.model.WorldData
 import com.brunofelixdev.kotlincovidstate.util.API_HOST
 import com.brunofelixdev.kotlincovidstate.util.API_KEY
-import com.brunofelixdev.kotlincovidstate.util.API_URL_WORLD
+import com.brunofelixdev.kotlincovidstate.util.API_URL
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import retrofit2.Call
@@ -16,7 +16,7 @@ class MyApiUnitTest {
     fun apiConnect_test() {
         val expected = 200
 
-        MyApi.invoke(API_URL_WORLD).fetchWorldData(API_HOST, API_KEY).enqueue(object: Callback<List<WorldData>> {
+        MyApi.invoke(API_URL).fetchWorldData(API_HOST, API_KEY).enqueue(object: Callback<List<WorldData>> {
             override fun onResponse(call: Call<List<WorldData>>, response: Response<List<WorldData>>) {
                 val result = response.isSuccessful
 

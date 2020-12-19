@@ -19,7 +19,7 @@
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="6dp"
             android:layout_weight="1"
-            android:theme="@style/Theme.Toolbar"
+            android:theme="@style/Theme.LightDark"
             app:cardCornerRadius="4dp"
             app:cardElevation="4dp">
 
@@ -60,7 +60,7 @@
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="6dp"
             android:layout_weight="1"
-            android:theme="@style/Theme.Toolbar"
+            android:theme="@style/Theme.LightDark"
             app:cardCornerRadius="4dp"
             app:cardElevation="4dp">
 
@@ -103,7 +103,7 @@
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="6dp"
             android:layout_weight="1"
-            android:theme="@style/Theme.Toolbar"
+            android:theme="@style/Theme.LightDark"
             app:cardCornerRadius="4dp"
             app:cardElevation="4dp">
 
@@ -153,7 +153,7 @@
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:theme="@style/Theme.Toolbar"
+            android:theme="@style/Theme.LightDark"
             app:cardCornerRadius="4dp"
             app:cardElevation="4dp">
 
@@ -196,7 +196,7 @@
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:theme="@style/Theme.Toolbar"
+            android:theme="@style/Theme.LightDark"
             app:cardCornerRadius="4dp"
             app:cardElevation="4dp">
 
@@ -240,7 +240,7 @@
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:theme="@style/Theme.Toolbar"
+            android:theme="@style/Theme.LightDark"
             app:cardCornerRadius="4dp"
             app:cardElevation="4dp">
 

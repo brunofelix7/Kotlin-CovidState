@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:elevation="8dp"
     android:gravity="center"
-    android:theme="@style/Theme.Toolbar"
+    android:theme="@style/Theme.LightDark"
     android:title="@string/app_name"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

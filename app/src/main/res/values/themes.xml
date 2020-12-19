@@ -17,8 +17,13 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/light</item>
     </style>
 
-    <style name="Theme.Toolbar" parent="ThemeOverlay.MaterialComponents.Light">
+    <style name="Theme.LightDark" parent="ThemeOverlay.MaterialComponents.Light">
         <item name="android:background">@color/light</item>
         <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Theme.TextLightDark" parent="ThemeOverlay.MaterialComponents.Light">
+        <item name="android:textColor">@color/black</item>
     </style>
 </resources>
