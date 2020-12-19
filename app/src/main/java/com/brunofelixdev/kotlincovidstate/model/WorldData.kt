@@ -1,6 +1,6 @@
 package com.brunofelixdev.kotlincovidstate.model
 
-data class WorldData (
+data class WorldData(
         val confirmed: Long?,
         val recovered: Long?,
         val critical: Long?,
