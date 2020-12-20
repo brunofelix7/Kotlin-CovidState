@@ -10,6 +10,7 @@ class DataViewModel(private val repository: DataRepository) : ViewModel() {
     var listener: DataListener? = null
 
     fun listAllData() {
+        listener?.onStarted()
         listener?.onCompletedWorldData(repository.fetchWorldData())
         listener?.onCompletedCountriesData(repository.fetchAllCountries())
     }

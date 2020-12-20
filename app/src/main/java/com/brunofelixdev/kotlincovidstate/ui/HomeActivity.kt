@@ -1,6 +1,8 @@
 package com.brunofelixdev.kotlincovidstate.ui
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
@@ -16,6 +18,7 @@ import com.brunofelixdev.kotlincovidstate.extension.recoveredRate
 import com.brunofelixdev.kotlincovidstate.listener.DataListener
 import com.brunofelixdev.kotlincovidstate.model.CountryData
 import com.brunofelixdev.kotlincovidstate.model.WorldData
+import com.brunofelixdev.kotlincovidstate.util.EXTRAS_KEY_COUNTRY_NAME
 import com.brunofelixdev.kotlincovidstate.viewmodel.DataViewModel
 
 class HomeActivity : AppCompatActivity(), DataListener {
@@ -44,6 +47,10 @@ class HomeActivity : AppCompatActivity(), DataListener {
         viewModel?.listAllData()
     }
 
+    override fun onStarted() {
+        //  TODO: Progress
+    }
+
     override fun onCompletedWorldData(liveData: LiveData<List<WorldData>>) {
         liveData.observe(this, { data ->
             if (data != null && data.isNotEmpty()) {
@@ -64,8 +71,16 @@ class HomeActivity : AppCompatActivity(), DataListener {
                 binding?.rvCountries?.setHasFixedSize(true)
                 binding?.rvCountries?.adapter = CountryDataAdapter(data.sortedByDescending { field ->
                     field.confirmed
-                })
+                }, this)
             }
         })
+    }
+
+    override fun onItemClick(view: View, country: String?) {
+        startActivity(
+            Intent(this, DetailsActivity::class.java).apply {
+                putExtra(EXTRAS_KEY_COUNTRY_NAME, country)
+            }
+        )
     }
 }

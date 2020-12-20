@@ -9,8 +9,14 @@
     <string name="label_critical">Críticos</string>
     <string name="label_death">Mortes</string>
     <string name="label_recovered">Recuperados</string>
-    <string name="label_recovered_rate">Recuperados %</string>
-    <string name="label_rate_death">Mortes %</string>
+    <string name="label_recovered_rate_number">Recuperados %</string>
+    <string name="label_fatality_rate_number">Mortes %</string>
+    <string name="label_active_cases">Casos ativos</string>
+    <string name="label_new_cases">Novos casos</string>
+    <string name="label_new_deaths">Novas mortes</string>
+    <string name="label_tests_done">Testes realizados</string>
+    <string name="label_fatality_rate">Taxa de fatalidade</string>
+    <string name="label_recovered_rate">Taxa de recuperados</string>
 
     <!-- Labels do header list -->
     <string name="label_header_country">País</string>

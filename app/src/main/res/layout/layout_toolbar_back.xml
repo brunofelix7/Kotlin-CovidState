@@ -5,5 +5,4 @@
     android:layout_height="wrap_content"
     android:elevation="8dp"
     android:gravity="center"
-    android:theme="@style/Theme.LightDark"
-    android:title="@string/app_name" />
+    android:theme="@style/Theme.LightDark" />
