@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,13 +18,17 @@ import com.brunofelixdev.kotlincovidstate.extension.dateFormatted
 import com.brunofelixdev.kotlincovidstate.extension.fatalityRate
 import com.brunofelixdev.kotlincovidstate.extension.formatNumber
 import com.brunofelixdev.kotlincovidstate.extension.recoveredRate
+import com.brunofelixdev.kotlincovidstate.fragment.MapsFragment
+import com.brunofelixdev.kotlincovidstate.fragment.RecentFragment
 import com.brunofelixdev.kotlincovidstate.listener.DataListener
 import com.brunofelixdev.kotlincovidstate.model.CountryData
 import com.brunofelixdev.kotlincovidstate.model.WorldData
 import com.brunofelixdev.kotlincovidstate.util.EXTRAS_KEY_COUNTRY_NAME
 import com.brunofelixdev.kotlincovidstate.viewmodel.DataViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 class HomeActivity : AppCompatActivity(), DataListener {
 
@@ -39,6 +44,26 @@ class HomeActivity : AppCompatActivity(), DataListener {
         searchConfig()
         fetchData()
     }
+
+    private fun fragmentsConfig() {
+        val recentFragment = RecentFragment()
+        val mapsFragment = MapsFragment()
+        binding?.navMenu?.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_recent -> {
+
+                }
+            }
+            true
+        }
+    }
+
+//    private fun makeCurrentFragment(fragment: Fragment) {
+//        supportFragmentManager.beginTransaction().apply {
+//            replace(R.id., fragment)
+//            commit()
+//        }
+//    }
 
     private fun bindingConfig() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)

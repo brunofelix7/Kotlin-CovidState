@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_recent"
+        android:icon="@drawable/ic_bar_chart"
+        android:title="@string/title_nav_recent" />
+
+    <item
+        android:id="@+id/nav_maps"
+        android:icon="@drawable/ic_map"
+        android:title="@string/title_nav_map" />
+</menu>

@@ -28,10 +28,18 @@
     <string name="title_search">Pesquisar</string>
     <string name="title_sync">Sincronizar</string>
 
+    <!-- Títulos do menu de navegacao -->
+    <string name="title_nav_recent">Recentes</string>
+    <string name="title_nav_map">Mapa</string>
+
     <!-- Barra de pesquisa (SearchView) -->
     <string name="hint_country_search">País…</string>
 
     <!-- Layout da tela de falha (layout_oops_screen.xml) -->
     <string name="label_oops_title">Oops!!</string>
     <string name="label_oops_message">Não foi possível carregar as informações, tente novamente.</string>
+
+    <!-- Fragments -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps_fragment">Map</string>
 </resources>
