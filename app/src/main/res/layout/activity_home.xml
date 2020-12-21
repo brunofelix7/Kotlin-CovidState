@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.HomeActivity">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.brunofelixdev.kotlincovidstate.viewmodel.DataViewModel" />
@@ -17,6 +19,17 @@
         <include
             android:id="@+id/include_toolbar"
             layout="@layout/layout_toolbar" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/country_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textCursorDrawable="@null"
+            android:theme="@style/Theme.LightDark"
+            app:queryHint="@string/hint_country_search"
+            android:visibility="gone"
+            app:iconifiedByDefault="false"
+            app:queryBackground="@null" />
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -26,4 +26,7 @@
     <!-- Títulos do menu -->
     <string name="title_search">Pesquisar</string>
     <string name="title_sync">Sincronizar</string>
+
+    <!-- Barra de pesquisa (SearchView) -->
+    <string name="hint_country_search">País…</string>
 </resources>

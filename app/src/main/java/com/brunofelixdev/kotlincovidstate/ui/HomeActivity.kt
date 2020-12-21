@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
@@ -25,11 +26,14 @@ class HomeActivity : AppCompatActivity(), DataListener {
 
     private var binding: ActivityHomeBinding? = null
     private var viewModel: DataViewModel? = null
+    private var isSearched: Boolean = false
+    private var displayCountryList = ArrayList<CountryData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingConfig()
         toolbarConfig()
+        searchConfig()
         fetchData()
     }
 
@@ -44,13 +48,36 @@ class HomeActivity : AppCompatActivity(), DataListener {
         viewModel?.listener = this
     }
 
+    private fun searchConfig() {
+        binding?.countrySearch?.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val adapter = CountryDataAdapter(displayCountryList.sortedByDescending { item -> item.confirmed },this@HomeActivity)
+                adapter.filter.filter(newText)
+                binding?.rvCountries?.adapter = adapter
+                binding?.rvCountries?.adapter?.notifyDataSetChanged()
+                return false
+            }
+
+        })
+    }
+
     private fun toolbarConfig() {
         binding?.includeToolbar?.toolbar?.title = resources.getString(R.string.app_name)
         binding?.includeToolbar?.toolbar?.inflateMenu(R.menu.action_menu)
         binding?.includeToolbar?.toolbar?.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.menu_search -> {
-                    //  TODO: pesquisar pais
+                    if (isSearched) {
+                        isSearched = false
+                        binding?.countrySearch?.visibility = View.GONE
+                    } else {
+                        isSearched = true
+                        binding?.countrySearch?.visibility = View.VISIBLE
+                    }
                     true
                 }
                 R.id.menu_sync -> {
@@ -86,11 +113,15 @@ class HomeActivity : AppCompatActivity(), DataListener {
     override fun onCompletedCountriesData(liveData: LiveData<List<CountryData>>) {
         liveData.observe(this, { data ->
             if (data != null && data.isNotEmpty()) {
+                displayCountryList.addAll(data)
                 binding?.rvCountries?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                 binding?.rvCountries?.setHasFixedSize(true)
-                binding?.rvCountries?.adapter = CountryDataAdapter(data.sortedByDescending { field ->
+                binding?.rvCountries?.adapter = CountryDataAdapter(displayCountryList.sortedByDescending { field ->
                     field.confirmed
                 }, this)
+
+                val searchItem = binding?.includeToolbar?.toolbar?.menu?.findItem(R.id.menu_search)
+                searchItem?.isVisible = true
             }
         })
     }
