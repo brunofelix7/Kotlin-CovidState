@@ -22,4 +22,8 @@
     <string name="label_header_country">País</string>
     <string name="label_header_confirmed">Conf.</string>
     <string name="label_header_recovered">Recupe.</string>
+
+    <!-- Títulos do menu -->
+    <string name="title_search">Pesquisar</string>
+    <string name="title_sync">Sincronizar</string>
 </resources>

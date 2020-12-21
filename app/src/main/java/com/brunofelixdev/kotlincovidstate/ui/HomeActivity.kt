@@ -29,6 +29,7 @@ class HomeActivity : AppCompatActivity(), DataListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingConfig()
+        toolbarConfig()
         fetchData()
     }
 
@@ -41,6 +42,24 @@ class HomeActivity : AppCompatActivity(), DataListener {
 
         binding?.viewModel = viewModel
         viewModel?.listener = this
+    }
+
+    private fun toolbarConfig() {
+        binding?.includeToolbar?.toolbar?.title = resources.getString(R.string.app_name)
+        binding?.includeToolbar?.toolbar?.inflateMenu(R.menu.action_menu)
+        binding?.includeToolbar?.toolbar?.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menu_search -> {
+                    //  TODO: pesquisar pais
+                    true
+                }
+                R.id.menu_sync -> {
+                    //  TODO: buscar da api novamente
+                    true
+                }
+                else -> super.onOptionsItemSelected(item)
+            }
+        }
     }
 
     private fun fetchData() {
