@@ -17,6 +17,7 @@
     <string name="label_tests_done">Testes realizados</string>
     <string name="label_fatality_rate">Taxa de fatalidade</string>
     <string name="label_recovered_rate">Taxa de recuperados</string>
+    <string name="label_footer_last_update">Última atualização:</string>
 
     <!-- Labels do header list -->
     <string name="label_header_country">País</string>
@@ -29,4 +30,8 @@
 
     <!-- Barra de pesquisa (SearchView) -->
     <string name="hint_country_search">País…</string>
+
+    <!-- Layout da tela de falha (layout_oops_screen.xml) -->
+    <string name="label_oops_title">Oops!!</string>
+    <string name="label_oops_message">Não foi possível carregar as informações, tente novamente.</string>
 </resources>

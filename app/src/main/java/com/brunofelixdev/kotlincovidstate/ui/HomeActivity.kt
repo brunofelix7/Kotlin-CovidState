@@ -13,6 +13,7 @@ import com.brunofelixdev.kotlincovidstate.R
 import com.brunofelixdev.kotlincovidstate.adapter.CountryDataAdapter
 import com.brunofelixdev.kotlincovidstate.data.api.repository.DataRepository
 import com.brunofelixdev.kotlincovidstate.databinding.ActivityHomeBinding
+import com.brunofelixdev.kotlincovidstate.extension.dateFormatted
 import com.brunofelixdev.kotlincovidstate.extension.fatalityRate
 import com.brunofelixdev.kotlincovidstate.extension.formatNumber
 import com.brunofelixdev.kotlincovidstate.extension.recoveredRate
@@ -21,6 +22,8 @@ import com.brunofelixdev.kotlincovidstate.model.CountryData
 import com.brunofelixdev.kotlincovidstate.model.WorldData
 import com.brunofelixdev.kotlincovidstate.util.EXTRAS_KEY_COUNTRY_NAME
 import com.brunofelixdev.kotlincovidstate.viewmodel.DataViewModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HomeActivity : AppCompatActivity(), DataListener {
 
@@ -40,8 +43,8 @@ class HomeActivity : AppCompatActivity(), DataListener {
     private fun bindingConfig() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         viewModel = ViewModelProvider(
-                this,
-                DataViewModel.DataViewModelFactory(DataRepository())
+            this,
+            DataViewModel.DataViewModelFactory(DataRepository())
         ).get(DataViewModel::class.java)
 
         binding?.viewModel = viewModel
@@ -49,13 +52,16 @@ class HomeActivity : AppCompatActivity(), DataListener {
     }
 
     private fun searchConfig() {
-        binding?.countrySearch?.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+        binding?.countrySearch?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                val adapter = CountryDataAdapter(displayCountryList.sortedByDescending { item -> item.confirmed },this@HomeActivity)
+                val adapter = CountryDataAdapter(
+                    displayCountryList.sortedByDescending { item -> item.confirmed },
+                    this@HomeActivity
+                )
                 adapter.filter.filter(newText)
                 binding?.rvCountries?.adapter = adapter
                 binding?.rvCountries?.adapter?.notifyDataSetChanged()
@@ -104,8 +110,12 @@ class HomeActivity : AppCompatActivity(), DataListener {
                 binding?.includeCards?.criticalValue?.text = data[0].critical?.formatNumber()
                 binding?.includeCards?.deathValue?.text = data[0].deaths?.formatNumber()
                 binding?.includeCards?.recoveredValue?.text = data[0].recovered?.formatNumber()
-                binding?.includeCards?.deathRateValue?.text = data[0].deaths?.fatalityRate(data[0].confirmed)
-                binding?.includeCards?.recoveredRateValue?.text = data[0].recovered?.recoveredRate(data[0].confirmed)
+                binding?.includeCards?.deathRateValue?.text =
+                    data[0].deaths?.fatalityRate(data[0].confirmed)
+                binding?.includeCards?.recoveredRateValue?.text = data[0].recovered?.recoveredRate(
+                    data[0].confirmed
+                )
+                binding?.includeFooter?.lastUpdateValue?.text = data[0].lastUpdate?.dateFormatted()
             }
         })
     }
@@ -114,11 +124,16 @@ class HomeActivity : AppCompatActivity(), DataListener {
         liveData.observe(this, { data ->
             if (data != null && data.isNotEmpty()) {
                 displayCountryList.addAll(data)
-                binding?.rvCountries?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+                binding?.rvCountries?.layoutManager = LinearLayoutManager(
+                    this,
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
                 binding?.rvCountries?.setHasFixedSize(true)
-                binding?.rvCountries?.adapter = CountryDataAdapter(displayCountryList.sortedByDescending { field ->
-                    field.confirmed
-                }, this)
+                binding?.rvCountries?.adapter =
+                    CountryDataAdapter(displayCountryList.sortedByDescending { field ->
+                        field.confirmed
+                    }, this)
 
                 val searchItem = binding?.includeToolbar?.toolbar?.menu?.findItem(R.id.menu_search)
                 searchItem?.isVisible = true

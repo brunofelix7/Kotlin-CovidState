@@ -1,5 +1,6 @@
 package com.brunofelixdev.kotlincovidstate.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.brunofelixdev.kotlincovidstate.R
 import com.brunofelixdev.kotlincovidstate.data.api.repository.StatisticsDataRepository
 import com.brunofelixdev.kotlincovidstate.databinding.ActivityDetailsBinding
+import com.brunofelixdev.kotlincovidstate.extension.dateFormatted
 import com.brunofelixdev.kotlincovidstate.extension.fatalityRate
 import com.brunofelixdev.kotlincovidstate.extension.formatNumber
 import com.brunofelixdev.kotlincovidstate.extension.recoveredRate
@@ -61,6 +63,7 @@ class DetailsActivity : AppCompatActivity(), StatisticsListener {
         //  TODO: Progress
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCompletedStatisticsData(liveData: LiveData<CountryStatisticsData>) {
         liveData.observe(this, { data ->
             if (data?.response != null) {
@@ -74,6 +77,7 @@ class DetailsActivity : AppCompatActivity(), StatisticsListener {
                 binding?.testsDone?.text = data.response[0].tests?.total?.formatNumber()
                 binding?.fatalityRate?.text = "${data.response[0].deaths?.total?.fatalityRate(data.response[0].cases?.total)} %"
                 binding?.recoveredRate?.text = "${data.response[0].cases?.recovered?.recoveredRate(data.response[0].cases?.total)} %"
+                binding?.includeFooter?.lastUpdateValue?.text = data.response[0].time?.dateFormatted()
             }
         })
     }
