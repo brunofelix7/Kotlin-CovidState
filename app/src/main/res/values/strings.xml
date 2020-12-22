@@ -42,4 +42,6 @@
     <!-- Fragments -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps_fragment">Map</string>
+
+    <string name="maps_key">AIzaSyD0OfhydpKJPwYUydlzYkLvCyRd5rErn7s</string>
 </resources>

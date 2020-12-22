@@ -4,66 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.HomeActivity">
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="com.brunofelixdev.kotlincovidstate.viewmodel.DataViewModel" />
-    </data>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/include_toolbar"
-            layout="@layout/layout_toolbar" />
-
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/country_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textCursorDrawable="@null"
-            android:theme="@style/Theme.LightDark"
-            android:visibility="gone"
-            app:iconifiedByDefault="false"
-            app:queryBackground="@null"
-            app:queryHint="@string/hint_country_search" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:orientation="vertical">
-
-            <include
-                android:id="@+id/include_cards"
-                layout="@layout/layout_cards_info" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="12dp"
-            android:orientation="vertical">
-
-            <include layout="@layout/layout_header_list" />
-
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_countries"
+        <FrameLayout
+            android:id="@+id/frame_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
-
-        <include
-            android:id="@+id/include_footer"
-            layout="@layout/layout_footer_last_update" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/nav_menu"
@@ -77,4 +27,6 @@
 
     </LinearLayout>
 </layout>
+
+
 
