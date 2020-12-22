@@ -5,6 +5,7 @@
     tools:context=".ui.HomeActivity">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.brunofelixdev.kotlincovidstate.viewmodel.DataViewModel" />
@@ -58,8 +59,6 @@
             android:id="@+id/rv_countries"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:layout_weight="1" />
 
         <include
@@ -70,7 +69,7 @@
             android:id="@+id/nav_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?android:attr/windowBackground"
+            android:background="@drawable/bg_nav_background"
             app:elevation="8dp"
             app:itemIconTint="@drawable/bg_nav_selected"
             app:itemTextColor="@drawable/bg_nav_selected"
