@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.brunofelixdev.kotlincovidstate.viewmodel.DetailsViewModel" />
+            type="com.brunofelixdev.kotlincovidstate.viewmodel.CountryDetailsViewModel" />
     </data>
 
     <LinearLayout

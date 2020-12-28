@@ -9,32 +9,35 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.brunofelixdev.kotlincovidstate.R
 import com.brunofelixdev.kotlincovidstate.adapter.CountryDataAdapter
 import com.brunofelixdev.kotlincovidstate.data.api.interceptor.NetworkConnectionInterceptor
-import com.brunofelixdev.kotlincovidstate.data.api.repository.DataRepository
+import com.brunofelixdev.kotlincovidstate.data.api.repository.WorldTotalRepository
 import com.brunofelixdev.kotlincovidstate.databinding.FragmentRecentBinding
 import com.brunofelixdev.kotlincovidstate.extension.dateFormatted
 import com.brunofelixdev.kotlincovidstate.extension.fatalityRate
 import com.brunofelixdev.kotlincovidstate.extension.formatNumber
 import com.brunofelixdev.kotlincovidstate.extension.recoveredRate
-import com.brunofelixdev.kotlincovidstate.listener.DataListener
-import com.brunofelixdev.kotlincovidstate.model.CountryData
-import com.brunofelixdev.kotlincovidstate.model.WorldData
+import com.brunofelixdev.kotlincovidstate.listener.WorldTotalListener
+import com.brunofelixdev.kotlincovidstate.data.api.dto.CountryDto
+import com.brunofelixdev.kotlincovidstate.data.api.dto.WorldTotalDto
+import com.brunofelixdev.kotlincovidstate.data.api.repository.CountryRepository
 import com.brunofelixdev.kotlincovidstate.ui.DetailsActivity
 import com.brunofelixdev.kotlincovidstate.util.EXTRAS_KEY_COUNTRY_NAME
-import com.brunofelixdev.kotlincovidstate.util.toast
-import com.brunofelixdev.kotlincovidstate.viewmodel.DataViewModel
+import com.brunofelixdev.kotlincovidstate.extension.toast
+import com.brunofelixdev.kotlincovidstate.listener.CountryListener
+import com.brunofelixdev.kotlincovidstate.viewmodel.CountryViewModel
+import com.brunofelixdev.kotlincovidstate.viewmodel.WorldTotalViewModel
 
-class RecentFragment : Fragment(), DataListener {
+class RecentFragment : Fragment(), WorldTotalListener, CountryListener {
 
     private var binding: FragmentRecentBinding? = null
-    private var viewModel: DataViewModel? = null
+    private var viewModel: CountryViewModel? = null
+    private var viewModelWorldTotal: WorldTotalViewModel? = null
     private var isSearched: Boolean = false
-    private var displayCountryList = ArrayList<CountryData>()
+    private var displayCountryList = ArrayList<CountryDto>()
     private lateinit var appContext: Context
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -42,7 +45,6 @@ class RecentFragment : Fragment(), DataListener {
         initObjects()
         toolbarConfig()
         searchConfig()
-        fetchData()
         return binding?.root
     }
 
@@ -50,11 +52,20 @@ class RecentFragment : Fragment(), DataListener {
         this.appContext = activity?.applicationContext!!
         viewModel = ViewModelProvider(
             this,
-            DataViewModel.DataViewModelFactory(DataRepository(appContext, NetworkConnectionInterceptor(appContext)))
-        ).get(DataViewModel::class.java)
+            CountryViewModel.CountryViewModelFactory(CountryRepository(NetworkConnectionInterceptor(appContext)))
+        ).get(CountryViewModel::class.java)
+
+        viewModelWorldTotal = ViewModelProvider(
+            this,
+            WorldTotalViewModel.WorldTotalViewModelFactory(WorldTotalRepository(NetworkConnectionInterceptor(appContext)))
+        ).get(WorldTotalViewModel::class.java)
 
         binding?.viewModel = viewModel
         viewModel?.listener = this
+        viewModelWorldTotal?.listener = this
+
+        viewModel?.listCountries()
+        viewModelWorldTotal?.listWorldTotal()
     }
 
     private fun searchConfig() {
@@ -101,70 +112,69 @@ class RecentFragment : Fragment(), DataListener {
         }
     }
 
-    private fun fetchData() {
-        viewModel?.listAllData()
-    }
-
     override fun onStarted() {
-        binding?.progress?.visibility = View.VISIBLE
+        //  TODO: Progress para os cards
     }
 
-    override fun onSuccessWorldData(liveData: LiveData<List<WorldData>>) {
-        liveData.observe(this, { data ->
-            if (data != null && data.isNotEmpty()) {
-                binding?.includeCards?.confirmedValue?.text = data[0].confirmed?.formatNumber()
-                binding?.includeCards?.criticalValue?.text = data[0].critical?.formatNumber()
-                binding?.includeCards?.deathValue?.text = data[0].deaths?.formatNumber()
-                binding?.includeCards?.recoveredValue?.text = data[0].recovered?.formatNumber()
-                binding?.includeCards?.deathRateValue?.text =
-                    data[0].deaths?.fatalityRate(data[0].confirmed)
-                binding?.includeCards?.recoveredRateValue?.text = data[0].recovered?.recoveredRate(
-                    data[0].confirmed
-                )
-                binding?.includeFooter?.lastUpdateValue?.text = data[0].lastUpdate?.dateFormatted()
-            }
-        })
-    }
-
-    override fun onSuccessCountriesData(liveData: LiveData<List<CountryData>>) {
-        liveData.observe(this, { data ->
-            if (data != null && data.isNotEmpty()) {
-                binding?.progress?.visibility = View.GONE
-                binding?.includeOops?.root?.visibility = View.GONE
-                binding?.rvCountries?.visibility = View.VISIBLE
-
-                displayCountryList.clear()
-                displayCountryList.addAll(data)
-
-                binding?.rvCountries?.layoutManager = LinearLayoutManager(
-                    activity?.applicationContext,
-                    LinearLayoutManager.VERTICAL,
-                    false
-                )
-                binding?.rvCountries?.setHasFixedSize(true)
-                binding?.rvCountries?.adapter =
-                    CountryDataAdapter(displayCountryList.sortedByDescending { field ->
-                        field.confirmed
-                    }, this)
-
-                val searchItem = binding?.includeToolbar?.toolbar?.menu?.findItem(R.id.menu_search)
-                searchItem?.isVisible = true
-            } else {
-                binding?.progress?.visibility = View.GONE
-                binding?.rvCountries?.visibility = View.GONE
-                binding?.includeOops?.root?.visibility = View.VISIBLE
-            }
-        })
+    override fun onSuccess(data: List<WorldTotalDto>?) {
+        if (data != null && data.isNotEmpty()) {
+            binding?.includeCards?.confirmedValue?.text = data[0].confirmed?.formatNumber()
+            binding?.includeCards?.criticalValue?.text = data[0].critical?.formatNumber()
+            binding?.includeCards?.deathValue?.text = data[0].deaths?.formatNumber()
+            binding?.includeCards?.recoveredValue?.text = data[0].recovered?.formatNumber()
+            binding?.includeCards?.deathRateValue?.text =
+                data[0].deaths?.fatalityRate(data[0].confirmed)
+            binding?.includeCards?.recoveredRateValue?.text = data[0].recovered?.recoveredRate(
+                data[0].confirmed
+            )
+            binding?.includeFooter?.lastUpdateValue?.text = data[0].lastUpdate?.dateFormatted()
+        }
     }
 
     override fun onError(message: String) {
         activity?.toast(message)
     }
 
-    override fun onItemClick(view: View, country: String?) {
+    override fun onCountriesStarted() {
+        binding?.progress?.visibility = View.VISIBLE
+    }
+
+    override fun onCountriesSuccess(data: List<CountryDto>?) {
+        if (data != null && data.isNotEmpty()) {
+            binding?.progress?.visibility = View.GONE
+            binding?.includeOops?.root?.visibility = View.GONE
+            binding?.rvCountries?.visibility = View.VISIBLE
+
+            displayCountryList.clear()
+            displayCountryList.addAll(data)
+
+            binding?.rvCountries?.layoutManager = LinearLayoutManager(
+                activity?.applicationContext,
+                LinearLayoutManager.VERTICAL,
+                false
+            )
+            binding?.rvCountries?.setHasFixedSize(true)
+            binding?.rvCountries?.adapter =
+                CountryDataAdapter(displayCountryList.sortedByDescending { field ->
+                    field.confirmed
+                }, this)
+
+            val searchItem = binding?.includeToolbar?.toolbar?.menu?.findItem(R.id.menu_search)
+            searchItem?.isVisible = true
+        } else {
+            binding?.progress?.visibility = View.GONE
+            binding?.rvCountries?.visibility = View.GONE
+            binding?.includeOops?.root?.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onCountriesError(message: String) {
+        activity?.toast(message)
+    }
+
+    override fun onCountryItemClick(view: View, country: String?) {
         startActivity(Intent(activity, DetailsActivity::class.java).apply {
-                putExtra(EXTRAS_KEY_COUNTRY_NAME, country)
-            }
-        )
+            putExtra(EXTRAS_KEY_COUNTRY_NAME, country)
+        })
     }
 }

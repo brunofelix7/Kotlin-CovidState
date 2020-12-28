@@ -1,11 +1,12 @@
 package com.brunofelixdev.kotlincovidstate.data.api
 
 import com.brunofelixdev.kotlincovidstate.data.api.interceptor.NetworkConnectionInterceptor
-import com.brunofelixdev.kotlincovidstate.model.CountryData
-import com.brunofelixdev.kotlincovidstate.model.CountryStatisticsData
-import com.brunofelixdev.kotlincovidstate.model.WorldData
+import com.brunofelixdev.kotlincovidstate.data.api.dto.CountryDto
+import com.brunofelixdev.kotlincovidstate.data.api.dto.CountryLocationDto
+import com.brunofelixdev.kotlincovidstate.data.api.dto.CountryStatisticsData
+import com.brunofelixdev.kotlincovidstate.data.api.dto.WorldTotalDto
 import okhttp3.OkHttpClient
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -34,22 +35,28 @@ interface Api {
     }
 
     @GET("totals")
-    fun fetchWorldData(
+    suspend fun fetchWorldData(
         @Header("x-rapidapi-host") host: String,
         @Header("x-rapidapi-key") apiKey: String
-    ): Call<List<WorldData>>
+    ): Response<List<WorldTotalDto>>
 
     @GET("country/all")
-    fun fetchAllCountries(
+    suspend fun fetchAllCountries(
         @Header("x-rapidapi-host") host: String,
         @Header("x-rapidapi-key") apiKey: String
-    ): Call<List<CountryData>>
+    ): Response<List<CountryDto>>
+
+    @GET("country/all")
+    suspend fun fetchCountryLocation(
+        @Header("x-rapidapi-host") host: String,
+        @Header("x-rapidapi-key") apiKey: String
+    ): Response<List<CountryLocationDto>>
 
     @GET("statistics")
-    fun fetchCountryStatistics(
+    suspend fun fetchCountryStatistics(
         @Header("x-rapidapi-host") host: String,
         @Header("x-rapidapi-key") apiKey: String,
         @Query("country") country: String
-    ): Call<CountryStatisticsData>
+    ): Response<CountryStatisticsData>
 
 }

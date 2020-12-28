@@ -3,16 +3,22 @@ package com.brunofelixdev.kotlincovidstate.fragment
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.os.NetworkOnMainThreadException
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.brunofelixdev.kotlincovidstate.R
 import com.brunofelixdev.kotlincovidstate.adapter.MapsInfoWindowAdapter
+import com.brunofelixdev.kotlincovidstate.data.api.dto.CountryLocationDto
 import com.brunofelixdev.kotlincovidstate.data.api.interceptor.NetworkConnectionInterceptor
-import com.brunofelixdev.kotlincovidstate.data.api.repository.DataRepository
+import com.brunofelixdev.kotlincovidstate.data.api.repository.CountryRepository
 import com.brunofelixdev.kotlincovidstate.extension.formatNumber
+import com.brunofelixdev.kotlincovidstate.extension.toast
+import com.brunofelixdev.kotlincovidstate.listener.CountryLocationListener
+import com.brunofelixdev.kotlincovidstate.util.APP_TAG
+import com.brunofelixdev.kotlincovidstate.viewmodel.CountryViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -21,15 +27,14 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 
-class MapsFragment : Fragment(), OnMapReadyCallback {
+class MapsFragment : Fragment(), OnMapReadyCallback, CountryLocationListener {
 
     private var mapFragment: SupportMapFragment? = null
+    private var viewModel: CountryViewModel? = null
     private lateinit var mMap: GoogleMap
-    private lateinit var repository: DataRepository
     private lateinit var appContext: Context
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        initObjects()
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
@@ -41,7 +46,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        mMap.addMarker(MarkerOptions().position(LatLng(-34.0, 151.0)).title("Marker in Sydney"))
         mMap.setMapStyle(
             MapStyleOptions.loadRawResourceStyle(
                 activity?.applicationContext,
@@ -49,7 +53,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             )
         )
         mapOptions()
-        getCountriesLocation()
+        initObjects()
     }
 
     private fun mapOptions() {
@@ -57,30 +61,17 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         mMap.uiSettings.isZoomGesturesEnabled = true
     }
 
-    private fun getCountriesLocation() {
-        repository.fetchAllCountries().observe(this, { data ->
-            if (data != null) {
-                for (item in data) {
-                    val country = item.country ?: "Unknown"
-                    val confirmed = item.confirmed ?: 0
-                    val deaths = item.deaths ?: 0
-                    val lat = item.latitude ?: 0.0
-                    val lng = item.longitude ?: 0.0
-                    activity?.runOnUiThread { addMarker(country, confirmed, deaths, LatLng(lat, lng))
-                        if (country == "Brazil") {
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(lat, lng), 4.0f))
-                        }
-                    }
-                }
-            }
-        })
-    }
-
     @SuppressLint("PotentialBehaviorOverride")
-    private fun addMarker(country: String, confirmed: Long, deaths: Long, location: LatLng) {
+    private fun addMarker(countryLocation: CountryLocationDto) {
+        val country = countryLocation.country ?: "Unknown"
+        val confirmed = countryLocation.confirmed ?: 0
+        val deaths = countryLocation.deaths ?: 0
+        val lat = countryLocation.latitude ?: 0.0
+        val lng = countryLocation.longitude ?: 0.0
+
         mMap.setInfoWindowAdapter(activity?.applicationContext?.let { MapsInfoWindowAdapter(it) })
         val markerOptions = MarkerOptions().apply {
-            position(location)
+            position(LatLng(lat, lng))
             title(country)
             snippet("Confirmados: ${confirmed.formatNumber()}\nMortes: ${deaths.formatNumber()}")
         }
@@ -93,7 +84,40 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     private fun initObjects() {
         this.appContext = activity?.applicationContext!!
-        this.repository = DataRepository(appContext, NetworkConnectionInterceptor(appContext))
+        viewModel = ViewModelProvider(
+            this,
+            CountryViewModel.CountryViewModelFactory(CountryRepository(NetworkConnectionInterceptor(appContext)))
+        ).get(CountryViewModel::class.java)
+
+        viewModel?.listenerCountryLocation = this
+        viewModel?.listCountryLocation()
+    }
+
+    override fun onStarted() {
+        activity?.toast("onStarted")
+    }
+
+    override fun onSuccess(data: List<CountryLocationDto>?) {
+        if (data != null) {
+            Log.i(APP_TAG, data.toString())
+            for (item in data) {
+                val country = item.country ?: "Unknown"
+                val lat = item.latitude ?: 0.0
+                val lng = item.longitude ?: 0.0
+                val countryLocation = CountryLocationDto(country, item.confirmed, item.deaths, lat, lng)
+
+                activity?.runOnUiThread {
+                    addMarker(countryLocation)
+                    if (country == "Brazil") {
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(lat, lng), 4.0f))
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onError(message: String) {
+        activity?.toast(message)
     }
 
 }

@@ -5,9 +5,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.brunofelixdev.kotlincovidstate.data.api.Api
 import com.brunofelixdev.kotlincovidstate.data.api.interceptor.NetworkConnectionInterceptor
 import com.brunofelixdev.kotlincovidstate.handler.ApiException
-import com.brunofelixdev.kotlincovidstate.model.CountryData
-import com.brunofelixdev.kotlincovidstate.model.CountryStatisticsData
-import com.brunofelixdev.kotlincovidstate.model.WorldData
+import com.brunofelixdev.kotlincovidstate.data.api.dto.CountryDto
+import com.brunofelixdev.kotlincovidstate.data.api.dto.CountryStatisticsData
+import com.brunofelixdev.kotlincovidstate.data.api.dto.WorldTotalDto
 import com.brunofelixdev.kotlincovidstate.util.*
 
 import org.junit.Test
@@ -32,14 +32,14 @@ class ApiTest {
         val expected = 200
 
         Api(API_URL, networkConnectionInterceptor).fetchWorldData(API_HOST, API_KEY).enqueue(object:
-            Callback<List<WorldData>> {
-            override fun onResponse(call: Call<List<WorldData>>, response: Response<List<WorldData>>) {
+            Callback<List<WorldTotalDto>> {
+            override fun onResponse(call: Call<List<WorldTotalDto>>, response: Response<List<WorldTotalDto>>) {
                 val result = response.isSuccessful
 
                 assertEquals(expected, result)
             }
 
-            override fun onFailure(call: Call<List<WorldData>>, t: Throwable) {
+            override fun onFailure(call: Call<List<WorldTotalDto>>, t: Throwable) {
 
             }
         })
@@ -49,14 +49,14 @@ class ApiTest {
     fun apiAllCountriesRequest_test() {
         val expected = 200
 
-        Api(API_URL, networkConnectionInterceptor).fetchAllCountries(API_HOST, API_KEY).enqueue(object: Callback<List<CountryData>> {
-            override fun onResponse(call: Call<List<CountryData>>, response: Response<List<CountryData>>) {
+        Api(API_URL, networkConnectionInterceptor).fetchAllCountries(API_HOST, API_KEY).enqueue(object: Callback<List<CountryDto>> {
+            override fun onResponse(call: Call<List<CountryDto>>, response: Response<List<CountryDto>>) {
                 val result = response.isSuccessful
 
                 assertEquals(expected, result)
             }
 
-            override fun onFailure(call: Call<List<CountryData>>, t: Throwable) {
+            override fun onFailure(call: Call<List<CountryDto>>, t: Throwable) {
                 throw ApiException("Oops!!")
             }
         })

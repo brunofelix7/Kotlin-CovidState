@@ -2,12 +2,13 @@ package com.brunofelixdev.kotlincovidstate.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.brunofelixdev.kotlincovidstate.data.api.repository.StatisticsDataRepository
+import com.brunofelixdev.kotlincovidstate.data.api.repository.CountryDetailsRepository
 import com.brunofelixdev.kotlincovidstate.handler.NoInternetException
-import com.brunofelixdev.kotlincovidstate.listener.StatisticsListener
+import com.brunofelixdev.kotlincovidstate.listener.CountryDetailsListener
+import com.brunofelixdev.kotlincovidstate.util.Coroutines
 import com.google.android.gms.common.api.ApiException
 
-class DetailsViewModel(private val repository: StatisticsDataRepository) : ViewModel() {
+class CountryDetailsViewModel(private val repository: CountryDetailsRepository) : ViewModel() {
 
     var confirmed: String? = null
     var activeCases: String? = null
@@ -20,12 +21,18 @@ class DetailsViewModel(private val repository: StatisticsDataRepository) : ViewM
     var fatalityRate: String? = null
     var recoveredRate: String? = null
 
-    var listener: StatisticsListener? = null
+    var listener: CountryDetailsListener? = null
 
     fun getStatistics(country: String) {
         listener?.onStarted()
         try {
-            listener?.onCompletedStatisticsData(repository.fetchCountryStatistics(country))
+            Coroutines.main {
+                val response = repository.fetchCountryStatistics(country)
+
+                if (response.isSuccessful) {
+                    listener?.onCompletedStatisticsData(response.body())
+                }
+            }
         } catch (e: ApiException) {
             listener?.onError(e.message ?: "")
         } catch (e: NoInternetException) {
@@ -33,9 +40,9 @@ class DetailsViewModel(private val repository: StatisticsDataRepository) : ViewM
         }
     }
 
-    class DetailsViewModelFactory(private val repository: StatisticsDataRepository) : ViewModelProvider.Factory {
+    class DetailsViewModelFactory(private val repository: CountryDetailsRepository) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return DetailsViewModel(repository) as T
+            return CountryDetailsViewModel(repository) as T
         }
     }
 

@@ -8,17 +8,18 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.brunofelixdev.kotlincovidstate.R
 import com.brunofelixdev.kotlincovidstate.databinding.ItemCountryBinding
-import com.brunofelixdev.kotlincovidstate.listener.DataListener
-import com.brunofelixdev.kotlincovidstate.model.CountryData
+import com.brunofelixdev.kotlincovidstate.listener.WorldTotalListener
+import com.brunofelixdev.kotlincovidstate.data.api.dto.CountryDto
+import com.brunofelixdev.kotlincovidstate.listener.CountryListener
 import java.util.*
 import kotlin.collections.ArrayList
 
 class CountryDataAdapter(
-    private val countryList: List<CountryData>,
-    private val listener: DataListener
+    private val countryList: List<CountryDto>,
+    private val listener: CountryListener
 ) : RecyclerView.Adapter<CountryDataAdapter.CountryViewHolder>(), Filterable {
 
-    var countryFilterList = ArrayList<CountryData>()
+    var countryFilterList = ArrayList<CountryDto>()
 
     init {
         countryFilterList.addAll(countryList)
@@ -39,7 +40,7 @@ class CountryDataAdapter(
             holder.binding.model = countryFilterList[position]
         }
         holder.binding.layoutRoot.setOnClickListener {
-            listener.onItemClick(holder.binding.layoutRoot, countryFilterList[position].country)
+            listener.onCountryItemClick(holder.binding.layoutRoot, countryFilterList[position].country)
         }
     }
 
@@ -68,7 +69,7 @@ class CountryDataAdapter(
 
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                countryFilterList = results?.values as ArrayList<CountryData>
+                countryFilterList = results?.values as ArrayList<CountryDto>
                 notifyDataSetChanged()
             }
         }

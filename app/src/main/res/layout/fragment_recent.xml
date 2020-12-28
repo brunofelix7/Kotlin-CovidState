@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
-            type="com.brunofelixdev.kotlincovidstate.viewmodel.DataViewModel" />
+            type="com.brunofelixdev.kotlincovidstate.viewmodel.CountryViewModel" />
     </data>
 
     <LinearLayout

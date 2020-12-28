@@ -1,4 +1,4 @@
-package com.brunofelixdev.kotlincovidstate.util
+package com.brunofelixdev.kotlincovidstate.extension
 
 import android.app.Activity
 import android.widget.Toast
