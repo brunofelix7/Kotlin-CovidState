@@ -25,18 +25,17 @@ class CountryDetailsViewModel(private val repository: CountryDetailsRepository) 
 
     fun getStatistics(country: String) {
         listener?.onStarted()
-        try {
-            Coroutines.main {
+
+        Coroutines.main {
+            try {
                 val response = repository.fetchCountryStatistics(country)
 
-                if (response.isSuccessful) {
-                    listener?.onCompletedStatisticsData(response.body())
-                }
+                listener?.onCompletedStatisticsData(response)
+            } catch (e: ApiException) {
+                listener?.onError(e.message ?: "")
+            } catch (e: NoInternetException) {
+                listener?.onError(e.message ?: "")
             }
-        } catch (e: ApiException) {
-            listener?.onError(e.message ?: "")
-        } catch (e: NoInternetException) {
-            listener?.onError(e.message ?: "")
         }
     }
 

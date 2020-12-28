@@ -132,7 +132,7 @@ class RecentFragment : Fragment(), WorldTotalListener, CountryListener {
     }
 
     override fun onError(message: String) {
-        activity?.toast(message)
+
     }
 
     override fun onCountriesStarted() {
@@ -169,7 +169,10 @@ class RecentFragment : Fragment(), WorldTotalListener, CountryListener {
     }
 
     override fun onCountriesError(message: String) {
-        activity?.toast(message)
+        binding?.progress?.visibility = View.GONE
+        binding?.rvCountries?.visibility = View.GONE
+        binding?.includeOops?.root?.visibility = View.VISIBLE
+        binding?.includeOops?.message?.text = message
     }
 
     override fun onCountryItemClick(view: View, country: String?) {

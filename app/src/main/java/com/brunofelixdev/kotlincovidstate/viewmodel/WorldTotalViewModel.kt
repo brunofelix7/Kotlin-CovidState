@@ -14,20 +14,17 @@ class WorldTotalViewModel(private val repository: WorldTotalRepository) : ViewMo
 
     fun listWorldTotal() {
         listener?.onStarted()
-        try {
-            Coroutines.main {
+
+        Coroutines.main {
+            try {
                 val response = repository.fetchWorldData()
 
-                if (response.isSuccessful) {
-                    listener?.onSuccess(response.body())
-                } else {
-                    listener?.onError("Error code: ${response.code()}")
-                }
+                listener?.onSuccess(response)
+            } catch (e: ApiException) {
+                listener?.onError(e.message ?: "")
+            } catch (e: NoInternetException) {
+                listener?.onError(e.message ?: "")
             }
-        } catch (e: ApiException) {
-            listener?.onError(e.message ?: "")
-        } catch (e: NoInternetException) {
-            listener?.onError(e.message ?: "")
         }
     }
 

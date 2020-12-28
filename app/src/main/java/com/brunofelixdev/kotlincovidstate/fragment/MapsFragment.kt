@@ -94,7 +94,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, CountryLocationListener {
     }
 
     override fun onStarted() {
-        activity?.toast("onStarted")
+        //  TODO: onStarted
     }
 
     override fun onSuccess(data: List<CountryLocationDto>?) {

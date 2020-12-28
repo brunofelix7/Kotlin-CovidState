@@ -16,39 +16,32 @@ class CountryViewModel(private val repository: CountryRepository) : ViewModel() 
 
     fun listCountries() {
         listener?.onCountriesStarted()
-        try {
-            Coroutines.main {
+
+        Coroutines.main {
+            try {
                 val response = repository.fetchCountries()
 
-                if (response.isSuccessful) {
-                    listener?.onCountriesSuccess(response.body())
-                } else {
-                    listener?.onCountriesError("Error code: ${response.code()}")
-                }
+                listener?.onCountriesSuccess(response)
+            } catch (e: ApiException) {
+                listener?.onCountriesError(e.message ?: "")
+            } catch (e: NoInternetException) {
+                listener?.onCountriesError(e.message ?: "")
             }
-        } catch (e: ApiException) {
-            listener?.onCountriesError(e.message ?: "")
-        } catch (e: NoInternetException) {
-            listener?.onCountriesError(e.message ?: "")
         }
     }
 
     fun listCountryLocation() {
         listenerCountryLocation?.onStarted()
-        try {
-            Coroutines.main {
+        Coroutines.main {
+            try {
                 val response = repository.fetchCountryLocation()
 
-                if (response.isSuccessful) {
-                    listenerCountryLocation?.onSuccess(response.body())
-                } else {
-                    listenerCountryLocation?.onError("Error code: ${response.code()}")
-                }
+                listenerCountryLocation?.onSuccess(response)
+            } catch (e: ApiException) {
+                listenerCountryLocation?.onError(e.message ?: "")
+            } catch (e: NoInternetException) {
+                listenerCountryLocation?.onError(e.message ?: "")
             }
-        } catch (e: ApiException) {
-            listenerCountryLocation?.onError(e.message ?: "")
-        } catch (e: NoInternetException) {
-            listenerCountryLocation?.onError(e.message ?: "")
         }
     }
 
