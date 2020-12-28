@@ -8,8 +8,9 @@ import com.brunofelixdev.kotlincovidstate.model.WorldData
 interface DataListener {
 
     fun onStarted()
-    fun onCompletedWorldData(liveData: LiveData<List<WorldData>>)
-    fun onCompletedCountriesData(liveData: LiveData<List<CountryData>>)
+    fun onSuccessWorldData(liveData: LiveData<List<WorldData>>)
+    fun onSuccessCountriesData(liveData: LiveData<List<CountryData>>)
+    fun onError(message: String)
     fun onItemClick(view: View, country: String?)
 
 }

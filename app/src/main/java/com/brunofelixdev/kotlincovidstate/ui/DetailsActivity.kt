@@ -4,11 +4,10 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.brunofelixdev.kotlincovidstate.R
+import com.brunofelixdev.kotlincovidstate.data.api.interceptor.NetworkConnectionInterceptor
 import com.brunofelixdev.kotlincovidstate.data.api.repository.StatisticsDataRepository
 import com.brunofelixdev.kotlincovidstate.databinding.ActivityDetailsBinding
 import com.brunofelixdev.kotlincovidstate.extension.dateFormatted
@@ -18,6 +17,7 @@ import com.brunofelixdev.kotlincovidstate.extension.recoveredRate
 import com.brunofelixdev.kotlincovidstate.listener.StatisticsListener
 import com.brunofelixdev.kotlincovidstate.model.CountryStatisticsData
 import com.brunofelixdev.kotlincovidstate.util.EXTRAS_KEY_COUNTRY_NAME
+import com.brunofelixdev.kotlincovidstate.util.toast
 import com.brunofelixdev.kotlincovidstate.viewmodel.DetailsViewModel
 
 class DetailsActivity : AppCompatActivity(), StatisticsListener {
@@ -31,16 +31,16 @@ class DetailsActivity : AppCompatActivity(), StatisticsListener {
 
         country = intent.extras?.getString(EXTRAS_KEY_COUNTRY_NAME)
 
-        bindingConfig()
+        initObjects()
         fetchData()
         toolbarConfig()
     }
 
-    private fun bindingConfig() {
+    private fun initObjects() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details)
         viewModel = ViewModelProvider(
             this,
-            DetailsViewModel.DetailsViewModelFactory(StatisticsDataRepository())
+            DetailsViewModel.DetailsViewModelFactory(StatisticsDataRepository(this, NetworkConnectionInterceptor(this)))
         ).get(DetailsViewModel::class.java)
 
         binding?.viewModel = viewModel
@@ -61,6 +61,10 @@ class DetailsActivity : AppCompatActivity(), StatisticsListener {
 
     override fun onStarted() {
         //  TODO: Progress
+    }
+
+    override fun onError(message: String) {
+        toast(message)
     }
 
     @SuppressLint("SetTextI18n")

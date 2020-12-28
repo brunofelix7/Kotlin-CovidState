@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.brunofelixdev.kotlincovidstate.viewmodel.DataViewModel" />
@@ -58,11 +59,33 @@
             android:id="@+id/rv_countries"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/include_oops"
+            layout="@layout/layout_oops_screen"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/blue700"
+            android:visibility="visible" />
 
         <include
             android:id="@+id/include_footer"
-            layout="@layout/layout_footer_last_update" />
+            layout="@layout/layout_footer_last_update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" />
 
     </LinearLayout>
 </layout>

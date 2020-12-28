@@ -3,8 +3,9 @@ package com.brunofelixdev.kotlincovidstate.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.brunofelixdev.kotlincovidstate.data.api.repository.StatisticsDataRepository
+import com.brunofelixdev.kotlincovidstate.handler.NoInternetException
 import com.brunofelixdev.kotlincovidstate.listener.StatisticsListener
-import com.brunofelixdev.kotlincovidstate.model.CountryStatisticsData
+import com.google.android.gms.common.api.ApiException
 
 class DetailsViewModel(private val repository: StatisticsDataRepository) : ViewModel() {
 
@@ -23,7 +24,13 @@ class DetailsViewModel(private val repository: StatisticsDataRepository) : ViewM
 
     fun getStatistics(country: String) {
         listener?.onStarted()
-        listener?.onCompletedStatisticsData(repository.fetchCountryStatistics(country))
+        try {
+            listener?.onCompletedStatisticsData(repository.fetchCountryStatistics(country))
+        } catch (e: ApiException) {
+            listener?.onError(e.message ?: "")
+        } catch (e: NoInternetException) {
+            listener?.onError(e.message ?: "")
+        }
     }
 
     class DetailsViewModelFactory(private val repository: StatisticsDataRepository) : ViewModelProvider.Factory {

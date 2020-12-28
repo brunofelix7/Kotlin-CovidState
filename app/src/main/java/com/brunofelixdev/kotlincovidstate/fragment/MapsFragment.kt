@@ -1,13 +1,16 @@
 package com.brunofelixdev.kotlincovidstate.fragment
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
+import android.os.NetworkOnMainThreadException
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.brunofelixdev.kotlincovidstate.R
 import com.brunofelixdev.kotlincovidstate.adapter.MapsInfoWindowAdapter
+import com.brunofelixdev.kotlincovidstate.data.api.interceptor.NetworkConnectionInterceptor
 import com.brunofelixdev.kotlincovidstate.data.api.repository.DataRepository
 import com.brunofelixdev.kotlincovidstate.extension.formatNumber
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -22,12 +25,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     private var mapFragment: SupportMapFragment? = null
     private lateinit var mMap: GoogleMap
+    private lateinit var repository: DataRepository
+    private lateinit var appContext: Context
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        initObjects()
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
@@ -56,7 +58,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun getCountriesLocation() {
-        val repository = DataRepository()
         repository.fetchAllCountries().observe(this, { data ->
             if (data != null) {
                 for (item in data) {
@@ -88,6 +89,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         } else {
             mMap.addMarker(markerOptions)
         }
+    }
+
+    private fun initObjects() {
+        this.appContext = activity?.applicationContext!!
+        this.repository = DataRepository(appContext, NetworkConnectionInterceptor(appContext))
     }
 
 }
