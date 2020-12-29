@@ -104,7 +104,8 @@ class RecentFragment : Fragment(), WorldTotalListener, CountryListener {
                     true
                 }
                 R.id.menu_sync -> {
-                    //  TODO: buscar da api novamente
+                    viewModel?.listCountries()
+                    viewModelWorldTotal?.listWorldTotal()
                     true
                 }
                 else -> super.onOptionsItemSelected(item)
@@ -112,8 +113,18 @@ class RecentFragment : Fragment(), WorldTotalListener, CountryListener {
         }
     }
 
+    private fun clearProperties() {
+        binding?.includeCards?.confirmedValue?.text = "0.0"
+        binding?.includeCards?.criticalValue?.text = "0.0"
+        binding?.includeCards?.deathValue?.text = "0.0"
+        binding?.includeCards?.recoveredValue?.text = "0.0"
+        binding?.includeCards?.deathRateValue?.text = "0.0"
+        binding?.includeCards?.recoveredRateValue?.text = "0.0"
+        binding?.includeFooter?.lastUpdateValue?.text = "0.0"
+    }
+
     override fun onStarted() {
-        //  TODO: Progress para os cards
+        clearProperties()
     }
 
     override fun onSuccess(data: List<WorldTotalDto>?) {
@@ -137,6 +148,8 @@ class RecentFragment : Fragment(), WorldTotalListener, CountryListener {
 
     override fun onCountriesStarted() {
         binding?.progress?.visibility = View.VISIBLE
+        binding?.rvCountries?.visibility = View.GONE
+        binding?.includeOops?.root?.visibility = View.GONE
     }
 
     override fun onCountriesSuccess(data: List<CountryDto>?) {
