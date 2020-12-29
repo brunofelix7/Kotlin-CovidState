@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.brunofelixdev.kotlincovidstate.R
@@ -13,6 +14,7 @@ import com.brunofelixdev.kotlincovidstate.adapter.MapsInfoWindowAdapter
 import com.brunofelixdev.kotlincovidstate.data.api.dto.CountryLocationDto
 import com.brunofelixdev.kotlincovidstate.data.api.interceptor.NetworkConnectionInterceptor
 import com.brunofelixdev.kotlincovidstate.data.api.repository.CountryRepository
+import com.brunofelixdev.kotlincovidstate.databinding.FragmentMapsBinding
 import com.brunofelixdev.kotlincovidstate.extension.formatNumber
 import com.brunofelixdev.kotlincovidstate.extension.toast
 import com.brunofelixdev.kotlincovidstate.listener.CountryLocationListener
@@ -27,13 +29,15 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 class MapsFragment : Fragment(), OnMapReadyCallback, CountryLocationListener {
 
+    private var binding: FragmentMapsBinding? = null
     private var mapFragment: SupportMapFragment? = null
     private var viewModel: CountryViewModel? = null
     private lateinit var mMap: GoogleMap
     private lateinit var appContext: Context
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_maps, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_maps, container, false)
+        return binding?.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -107,7 +111,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, CountryLocationListener {
     }
 
     override fun onStarted() {
-        //  TODO: onStarted
+        binding?.progress?.visibility = View.VISIBLE
     }
 
     override fun onSuccess(data: List<CountryLocationDto>?) {
@@ -126,9 +130,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback, CountryLocationListener {
                 }
             }
         }
+        binding?.progress?.visibility = View.GONE
     }
 
     override fun onError(message: String) {
+        binding?.progress?.visibility = View.GONE
         activity?.toast(message)
     }
 

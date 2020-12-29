@@ -120,7 +120,7 @@ class RecentFragment : Fragment(), WorldTotalListener, CountryListener {
         binding?.includeCards?.recoveredValue?.text = "0.0"
         binding?.includeCards?.deathRateValue?.text = "0.0"
         binding?.includeCards?.recoveredRateValue?.text = "0.0"
-        binding?.includeFooter?.lastUpdateValue?.text = "0.0"
+        binding?.includeFooter?.lastUpdateValue?.text = ""
     }
 
     override fun onStarted() {
