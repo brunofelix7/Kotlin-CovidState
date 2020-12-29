@@ -3,7 +3,6 @@ package com.brunofelixdev.kotlincovidstate.fragment
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ import com.brunofelixdev.kotlincovidstate.data.api.repository.CountryRepository
 import com.brunofelixdev.kotlincovidstate.extension.formatNumber
 import com.brunofelixdev.kotlincovidstate.extension.toast
 import com.brunofelixdev.kotlincovidstate.listener.CountryLocationListener
-import com.brunofelixdev.kotlincovidstate.util.APP_TAG
 import com.brunofelixdev.kotlincovidstate.viewmodel.CountryViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -46,14 +44,29 @@ class MapsFragment : Fragment(), OnMapReadyCallback, CountryLocationListener {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        mMap.setMapStyle(
-            MapStyleOptions.loadRawResourceStyle(
-                activity?.applicationContext,
-                R.raw.style_json
-            )
-        )
+        changeStyleByUiMode()
         mapOptions()
         initObjects()
+    }
+
+    private fun changeStyleByUiMode() {
+        when (isInNightMode()) {
+            true -> {
+                mMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                        activity?.applicationContext,
+                        R.raw.style_night
+                    )
+                )
+            }
+        }
+    }
+
+    private fun isInNightMode() : Boolean {
+        return when(resources.configuration.uiMode) {
+            33 -> true
+            else -> false
+        }
     }
 
     private fun mapOptions() {
@@ -99,7 +112,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback, CountryLocationListener {
 
     override fun onSuccess(data: List<CountryLocationDto>?) {
         if (data != null) {
-            Log.i(APP_TAG, data.toString())
             for (item in data) {
                 val country = item.country ?: "Unknown"
                 val lat = item.latitude ?: 0.0
