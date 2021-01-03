@@ -12,13 +12,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.brunofelixdev.kotlincovidstate.R
 import com.brunofelixdev.kotlincovidstate.adapter.MapsInfoWindowAdapter
 import com.brunofelixdev.kotlincovidstate.data.api.dto.CountryLocationDto
-import com.brunofelixdev.kotlincovidstate.data.api.interceptor.NetworkConnectionInterceptor
-import com.brunofelixdev.kotlincovidstate.data.api.repository.CountryRepository
 import com.brunofelixdev.kotlincovidstate.databinding.FragmentMapsBinding
 import com.brunofelixdev.kotlincovidstate.extension.formatNumber
 import com.brunofelixdev.kotlincovidstate.extension.toast
 import com.brunofelixdev.kotlincovidstate.listener.CountryLocationListener
 import com.brunofelixdev.kotlincovidstate.viewmodel.CountryViewModel
+import com.brunofelixdev.kotlincovidstate.viewmodel.CountryViewModel.CountryViewModelFactory
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -26,14 +25,22 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
+import org.kodein.di.KodeinAware
+import org.kodein.di.generic.instance
+import org.kodein.di.android.x.kodein
 
-class MapsFragment : Fragment(), OnMapReadyCallback, CountryLocationListener {
+class MapsFragment : Fragment(), OnMapReadyCallback, CountryLocationListener, KodeinAware {
+
+    override val kodein by kodein()
 
     private var binding: FragmentMapsBinding? = null
     private var mapFragment: SupportMapFragment? = null
     private var viewModel: CountryViewModel? = null
     private lateinit var mMap: GoogleMap
     private lateinit var appContext: Context
+
+    //  Inject
+    private val factory : CountryViewModelFactory by instance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_maps, container, false)
@@ -101,10 +108,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, CountryLocationListener {
 
     private fun initObjects() {
         this.appContext = activity?.applicationContext!!
-        viewModel = ViewModelProvider(
-            this,
-            CountryViewModel.CountryViewModelFactory(CountryRepository(NetworkConnectionInterceptor(appContext)))
-        ).get(CountryViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(CountryViewModel::class.java)
 
         viewModel?.listenerCountryLocation = this
         viewModel?.listCountryLocation()

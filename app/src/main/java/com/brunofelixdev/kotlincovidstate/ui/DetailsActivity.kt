@@ -6,24 +6,27 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.brunofelixdev.kotlincovidstate.R
-import com.brunofelixdev.kotlincovidstate.data.api.interceptor.NetworkConnectionInterceptor
-import com.brunofelixdev.kotlincovidstate.data.api.repository.CountryDetailsRepository
-import com.brunofelixdev.kotlincovidstate.databinding.ActivityDetailsBinding
-import com.brunofelixdev.kotlincovidstate.extension.dateFormatted
-import com.brunofelixdev.kotlincovidstate.extension.fatalityRate
-import com.brunofelixdev.kotlincovidstate.extension.formatNumber
-import com.brunofelixdev.kotlincovidstate.extension.recoveredRate
-import com.brunofelixdev.kotlincovidstate.listener.CountryDetailsListener
 import com.brunofelixdev.kotlincovidstate.data.api.dto.CountryStatisticsData
+import com.brunofelixdev.kotlincovidstate.databinding.ActivityDetailsBinding
+import com.brunofelixdev.kotlincovidstate.extension.*
+import com.brunofelixdev.kotlincovidstate.listener.CountryDetailsListener
 import com.brunofelixdev.kotlincovidstate.util.EXTRAS_KEY_COUNTRY_NAME
-import com.brunofelixdev.kotlincovidstate.extension.toast
 import com.brunofelixdev.kotlincovidstate.viewmodel.CountryDetailsViewModel
+import com.brunofelixdev.kotlincovidstate.viewmodel.CountryDetailsViewModel.CountryDetailsViewModelFactory
+import org.kodein.di.KodeinAware
+import org.kodein.di.generic.instance
+import org.kodein.di.android.kodein
 
-class DetailsActivity : AppCompatActivity(), CountryDetailsListener {
+class DetailsActivity : AppCompatActivity(), CountryDetailsListener, KodeinAware {
+
+    override val kodein by kodein()
 
     private var country: String? = null
     private var binding: ActivityDetailsBinding? = null
     private var viewModelCountry: CountryDetailsViewModel? = null
+
+    //  Inject
+    private val factory : CountryDetailsViewModelFactory by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,10 +40,7 @@ class DetailsActivity : AppCompatActivity(), CountryDetailsListener {
 
     private fun initObjects() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details)
-        viewModelCountry = ViewModelProvider(
-            this,
-            CountryDetailsViewModel.DetailsViewModelFactory(CountryDetailsRepository(NetworkConnectionInterceptor(this)))
-        ).get(CountryDetailsViewModel::class.java)
+        viewModelCountry = ViewModelProvider(this, factory).get(CountryDetailsViewModel::class.java)
 
         binding?.viewModel = viewModelCountry
         viewModelCountry?.listener = this

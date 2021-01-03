@@ -39,7 +39,7 @@ class CountryDetailsViewModel(private val repository: CountryDetailsRepository) 
         }
     }
 
-    class DetailsViewModelFactory(private val repository: CountryDetailsRepository) : ViewModelProvider.Factory {
+    class CountryDetailsViewModelFactory(private val repository: CountryDetailsRepository) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return CountryDetailsViewModel(repository) as T
         }

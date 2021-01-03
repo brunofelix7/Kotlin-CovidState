@@ -13,25 +13,28 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.brunofelixdev.kotlincovidstate.R
 import com.brunofelixdev.kotlincovidstate.adapter.CountryDataAdapter
-import com.brunofelixdev.kotlincovidstate.data.api.interceptor.NetworkConnectionInterceptor
-import com.brunofelixdev.kotlincovidstate.data.api.repository.WorldTotalRepository
+import com.brunofelixdev.kotlincovidstate.data.api.dto.CountryDto
+import com.brunofelixdev.kotlincovidstate.data.api.dto.WorldTotalDto
 import com.brunofelixdev.kotlincovidstate.databinding.FragmentRecentBinding
 import com.brunofelixdev.kotlincovidstate.extension.dateFormatted
 import com.brunofelixdev.kotlincovidstate.extension.fatalityRate
 import com.brunofelixdev.kotlincovidstate.extension.formatNumber
 import com.brunofelixdev.kotlincovidstate.extension.recoveredRate
+import com.brunofelixdev.kotlincovidstate.listener.CountryListener
 import com.brunofelixdev.kotlincovidstate.listener.WorldTotalListener
-import com.brunofelixdev.kotlincovidstate.data.api.dto.CountryDto
-import com.brunofelixdev.kotlincovidstate.data.api.dto.WorldTotalDto
-import com.brunofelixdev.kotlincovidstate.data.api.repository.CountryRepository
 import com.brunofelixdev.kotlincovidstate.ui.DetailsActivity
 import com.brunofelixdev.kotlincovidstate.util.EXTRAS_KEY_COUNTRY_NAME
-import com.brunofelixdev.kotlincovidstate.extension.toast
-import com.brunofelixdev.kotlincovidstate.listener.CountryListener
 import com.brunofelixdev.kotlincovidstate.viewmodel.CountryViewModel
+import com.brunofelixdev.kotlincovidstate.viewmodel.CountryViewModel.CountryViewModelFactory
 import com.brunofelixdev.kotlincovidstate.viewmodel.WorldTotalViewModel
+import com.brunofelixdev.kotlincovidstate.viewmodel.WorldTotalViewModel.WorldTotalViewModelFactory
+import org.kodein.di.KodeinAware
+import org.kodein.di.generic.instance
+import org.kodein.di.android.x.kodein
 
-class RecentFragment : Fragment(), WorldTotalListener, CountryListener {
+class RecentFragment : Fragment(), WorldTotalListener, CountryListener, KodeinAware {
+
+    override val kodein by kodein()
 
     private var binding: FragmentRecentBinding? = null
     private var viewModel: CountryViewModel? = null
@@ -39,6 +42,10 @@ class RecentFragment : Fragment(), WorldTotalListener, CountryListener {
     private var isSearched: Boolean = false
     private var displayCountryList = ArrayList<CountryDto>()
     private lateinit var appContext: Context
+
+    //  Inject
+    private val countryFactory : CountryViewModelFactory by instance()
+    private val worldTotalFactory : WorldTotalViewModelFactory by instance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recent, container, false)
@@ -50,15 +57,8 @@ class RecentFragment : Fragment(), WorldTotalListener, CountryListener {
 
     private fun initObjects() {
         this.appContext = activity?.applicationContext!!
-        viewModel = ViewModelProvider(
-            this,
-            CountryViewModel.CountryViewModelFactory(CountryRepository(NetworkConnectionInterceptor(appContext)))
-        ).get(CountryViewModel::class.java)
-
-        viewModelWorldTotal = ViewModelProvider(
-            this,
-            WorldTotalViewModel.WorldTotalViewModelFactory(WorldTotalRepository(NetworkConnectionInterceptor(appContext)))
-        ).get(WorldTotalViewModel::class.java)
+        viewModel = ViewModelProvider(this, countryFactory).get(CountryViewModel::class.java)
+        viewModelWorldTotal = ViewModelProvider(this, worldTotalFactory).get(WorldTotalViewModel::class.java)
 
         binding?.viewModel = viewModel
         viewModel?.listener = this
@@ -193,4 +193,5 @@ class RecentFragment : Fragment(), WorldTotalListener, CountryListener {
             putExtra(EXTRAS_KEY_COUNTRY_NAME, country)
         })
     }
+
 }
