@@ -1,8 +1,8 @@
-package com.brunofelixdev.kotlincovidstate.data.api.dto
+package com.brunofelixdev.kotlincovidstate.data.api.response
 
 import java.text.NumberFormat
 
-data class CountryDto(
+data class CountryResponse(
     val code: String?,
     val confirmed: Long?,
     val country: String?,

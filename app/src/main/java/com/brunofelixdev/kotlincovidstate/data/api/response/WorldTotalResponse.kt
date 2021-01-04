@@ -1,8 +1,8 @@
-package com.brunofelixdev.kotlincovidstate.data.api.dto
+package com.brunofelixdev.kotlincovidstate.data.api.response
 
 import java.text.NumberFormat
 
-data class WorldTotalDto(
+data class WorldTotalResponse(
         val confirmed: Long?,
         val recovered: Long?,
         val critical: Long?,

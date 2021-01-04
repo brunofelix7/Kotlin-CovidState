@@ -1,6 +1,6 @@
 package com.brunofelixdev.kotlincovidstate.listener
 
-import com.brunofelixdev.kotlincovidstate.data.api.dto.CountryStatisticsData
+import com.brunofelixdev.kotlincovidstate.data.api.response.CountryStatisticsData
 
 interface CountryDetailsListener {
 

@@ -1,6 +1,6 @@
-package com.brunofelixdev.kotlincovidstate.data.api.dto
+package com.brunofelixdev.kotlincovidstate.data.api.response
 
-data class CountryLocationDto(
+data class CountryLocationResponse(
     val country: String?,
     val confirmed: Long?,
     val deaths: Long?,

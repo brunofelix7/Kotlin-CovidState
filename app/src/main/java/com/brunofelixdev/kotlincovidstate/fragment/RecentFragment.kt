@@ -13,8 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.brunofelixdev.kotlincovidstate.R
 import com.brunofelixdev.kotlincovidstate.adapter.CountryDataAdapter
-import com.brunofelixdev.kotlincovidstate.data.api.dto.CountryDto
-import com.brunofelixdev.kotlincovidstate.data.api.dto.WorldTotalDto
+import com.brunofelixdev.kotlincovidstate.data.api.response.CountryResponse
+import com.brunofelixdev.kotlincovidstate.data.api.response.WorldTotalResponse
 import com.brunofelixdev.kotlincovidstate.databinding.FragmentRecentBinding
 import com.brunofelixdev.kotlincovidstate.extension.dateFormatted
 import com.brunofelixdev.kotlincovidstate.extension.fatalityRate
@@ -40,7 +40,7 @@ class RecentFragment : Fragment(), WorldTotalListener, CountryListener, KodeinAw
     private var viewModel: CountryViewModel? = null
     private var viewModelWorldTotal: WorldTotalViewModel? = null
     private var isSearched: Boolean = false
-    private var displayCountryList = ArrayList<CountryDto>()
+    private var displayCountryList = ArrayList<CountryResponse>()
     private lateinit var appContext: Context
 
     //  Inject
@@ -127,7 +127,7 @@ class RecentFragment : Fragment(), WorldTotalListener, CountryListener, KodeinAw
         clearProperties()
     }
 
-    override fun onSuccess(data: List<WorldTotalDto>?) {
+    override fun onSuccess(data: List<WorldTotalResponse>?) {
         if (data != null && data.isNotEmpty()) {
             binding?.includeCards?.confirmedValue?.text = data[0].confirmed?.formatNumber()
             binding?.includeCards?.criticalValue?.text = data[0].critical?.formatNumber()
@@ -152,7 +152,7 @@ class RecentFragment : Fragment(), WorldTotalListener, CountryListener, KodeinAw
         binding?.includeOops?.root?.visibility = View.GONE
     }
 
-    override fun onCountriesSuccess(data: List<CountryDto>?) {
+    override fun onCountriesSuccess(data: List<CountryResponse>?) {
         if (data != null && data.isNotEmpty()) {
             binding?.progress?.visibility = View.GONE
             binding?.includeOops?.root?.visibility = View.GONE

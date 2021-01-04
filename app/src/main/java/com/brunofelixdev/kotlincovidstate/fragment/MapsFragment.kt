@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.brunofelixdev.kotlincovidstate.R
 import com.brunofelixdev.kotlincovidstate.adapter.MapsInfoWindowAdapter
-import com.brunofelixdev.kotlincovidstate.data.api.dto.CountryLocationDto
+import com.brunofelixdev.kotlincovidstate.data.api.response.CountryLocationResponse
 import com.brunofelixdev.kotlincovidstate.databinding.FragmentMapsBinding
 import com.brunofelixdev.kotlincovidstate.extension.formatNumber
 import com.brunofelixdev.kotlincovidstate.extension.toast
@@ -86,7 +86,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, CountryLocationListener, Ko
     }
 
     @SuppressLint("PotentialBehaviorOverride")
-    private fun addMarker(countryLocation: CountryLocationDto) {
+    private fun addMarker(countryLocation: CountryLocationResponse) {
         val country = countryLocation.country ?: "Unknown"
         val confirmed = countryLocation.confirmed ?: 0
         val deaths = countryLocation.deaths ?: 0
@@ -118,13 +118,13 @@ class MapsFragment : Fragment(), OnMapReadyCallback, CountryLocationListener, Ko
         binding?.progress?.visibility = View.VISIBLE
     }
 
-    override fun onSuccess(data: List<CountryLocationDto>?) {
+    override fun onSuccess(data: List<CountryLocationResponse>?) {
         if (data != null) {
             for (item in data) {
                 val country = item.country ?: "Unknown"
                 val lat = item.latitude ?: 0.0
                 val lng = item.longitude ?: 0.0
-                val countryLocation = CountryLocationDto(country, item.confirmed, item.deaths, lat, lng)
+                val countryLocation = CountryLocationResponse(country, item.confirmed, item.deaths, lat, lng)
 
                 activity?.runOnUiThread {
                     addMarker(countryLocation)

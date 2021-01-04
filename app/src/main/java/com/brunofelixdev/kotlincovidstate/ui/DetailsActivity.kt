@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.brunofelixdev.kotlincovidstate.R
-import com.brunofelixdev.kotlincovidstate.data.api.dto.CountryStatisticsData
+import com.brunofelixdev.kotlincovidstate.data.api.response.CountryStatisticsData
 import com.brunofelixdev.kotlincovidstate.databinding.ActivityDetailsBinding
 import com.brunofelixdev.kotlincovidstate.extension.*
 import com.brunofelixdev.kotlincovidstate.listener.CountryDetailsListener

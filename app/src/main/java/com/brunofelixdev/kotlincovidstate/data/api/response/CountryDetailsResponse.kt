@@ -1,4 +1,4 @@
-package com.brunofelixdev.kotlincovidstate.data.api.dto
+package com.brunofelixdev.kotlincovidstate.data.api.response
 
 data class CountryStatisticsData(
     val response: List<Response>?

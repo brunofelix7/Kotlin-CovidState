@@ -8,10 +8,19 @@ import com.brunofelixdev.kotlincovidstate.R
 import com.brunofelixdev.kotlincovidstate.databinding.ActivityHomeBinding
 import com.brunofelixdev.kotlincovidstate.fragment.MapsFragment
 import com.brunofelixdev.kotlincovidstate.fragment.RecentFragment
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
+import org.kodein.di.generic.instance
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), KodeinAware {
+
+    override val kodein by kodein()
 
     private var binding: ActivityHomeBinding? = null
+
+    //  Inject
+    private val recentFragment: RecentFragment by instance()
+    private val mapsFragment: MapsFragment by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,9 +28,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun fragmentsConfig() {
-        val recentFragment = RecentFragment()
-        val mapsFragment = MapsFragment()
-
         makeCurrentFragment(recentFragment)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)

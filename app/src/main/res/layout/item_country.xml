@@ -4,7 +4,7 @@
     <data>
         <variable
             name="model"
-            type="com.brunofelixdev.kotlincovidstate.data.api.dto.CountryDto" />
+            type="com.brunofelixdev.kotlincovidstate.data.api.response.CountryResponse" />
     </data>
 
     <LinearLayout
