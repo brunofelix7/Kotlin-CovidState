@@ -2,6 +2,23 @@
     <!-- No do aplicativo -->
     <string name="app_name">COVID State</string>
 
+
+    <!-- TAG para o filtrar os logs -->
+    <string name="log_tag">tag-covid-state</string>
+
+
+    <!-- Dados da API -->
+    <string name="api_key">d172e810e7msh47584ae043c146dp12d8eejsnb0b3c42c4a59</string>
+    <string name="api_url">https://covid-19-data.p.rapidapi.com/</string>
+    <string name="api_url_statistics">https://covid-193.p.rapidapi.com/</string>
+    <string name="api_host">covid-19-data.p.rapidapi.com</string>
+    <string name="api_host_statistics">covid-193.p.rapidapi.com</string>
+
+
+    <!-- Extras - Passagem de parametros entre telas -->
+    <string name="extras_key_country_name">key-country-name</string>
+
+
     <!-- Labels gerais -->
     <string name="label_default_value">0.0</string>
     <string name="label_default_country">Brazil</string>
@@ -19,32 +36,40 @@
     <string name="label_recovered_rate">Taxa de recuperados</string>
     <string name="label_footer_last_update">Última atualização:</string>
 
+
     <!-- Labels do header list -->
     <string name="label_header_country">País</string>
     <string name="label_header_confirmed">Conf.</string>
     <string name="label_header_recovered">Recupe.</string>
 
+
     <!-- Títulos do menu -->
     <string name="title_search">Pesquisar</string>
     <string name="title_sync">Sincronizar</string>
+
 
     <!-- Títulos do menu de navegacao -->
     <string name="title_nav_recent">Recentes</string>
     <string name="title_nav_map">Mapa</string>
 
+
     <!-- Barra de pesquisa (SearchView) -->
     <string name="hint_country_search">País…</string>
+
 
     <!-- Layout da tela de falha (layout_oops_screen.xml) -->
     <string name="label_oops_title">Oops!!</string>
     <string name="label_oops_message">Não foi possível carregar as informações, tente novamente.</string>
 
+
     <!-- Fragments -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps_fragment">Map</string>
 
+
     <!-- Google Maps API Key -->
     <string name="maps_key">AIzaSyD0OfhydpKJPwYUydlzYkLvCyRd5rErn7s</string>
+
 
     <!-- Mensagens de Execoes -->
     <string name="msg_request_api_failure">Requisição a API falhou, verifique os arquivos de log</string>

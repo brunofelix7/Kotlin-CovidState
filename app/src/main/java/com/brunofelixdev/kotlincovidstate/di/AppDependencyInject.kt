@@ -1,4 +1,4 @@
-package com.brunofelixdev.kotlincovidstate.config
+package com.brunofelixdev.kotlincovidstate.di
 
 import android.app.Application
 import com.brunofelixdev.kotlincovidstate.data.api.Api
@@ -19,10 +19,10 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
 
-class AppConfig : Application(), KodeinAware {
+class AppDependencyInject : Application(), KodeinAware {
 
     override val kodein = Kodein.lazy {
-        import(androidXModule(this@AppConfig))
+        import(androidXModule(this@AppDependencyInject))
 
         bind() from singleton { RecentFragment() }
         bind() from singleton { MapsFragment() }

@@ -10,7 +10,6 @@ import com.brunofelixdev.kotlincovidstate.data.api.response.CountryStatisticsDat
 import com.brunofelixdev.kotlincovidstate.databinding.ActivityDetailsBinding
 import com.brunofelixdev.kotlincovidstate.extension.*
 import com.brunofelixdev.kotlincovidstate.listener.CountryDetailsListener
-import com.brunofelixdev.kotlincovidstate.util.EXTRAS_KEY_COUNTRY_NAME
 import com.brunofelixdev.kotlincovidstate.viewmodel.CountryDetailsViewModel
 import com.brunofelixdev.kotlincovidstate.viewmodel.CountryDetailsViewModel.CountryDetailsViewModelFactory
 import org.kodein.di.KodeinAware
@@ -31,7 +30,7 @@ class DetailsActivity : AppCompatActivity(), CountryDetailsListener, KodeinAware
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        country = intent.extras?.getString(EXTRAS_KEY_COUNTRY_NAME)
+        country = intent.extras?.getString(this.resources.getString(R.string.extras_key_country_name))
 
         initObjects()
         fetchData()

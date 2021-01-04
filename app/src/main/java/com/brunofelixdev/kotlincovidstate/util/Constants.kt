@@ -1,8 +1,6 @@
 package com.brunofelixdev.kotlincovidstate.util
 
 
-const val APP_TAG: String = "tag-covid-state"
-
 //  Host da API
 const val API_HOST: String = "covid-19-data.p.rapidapi.com"
 
@@ -17,5 +15,3 @@ const val API_URL: String = "https://covid-19-data.p.rapidapi.com/"
 
 //  Endpoint da API de estatísticas
 const val API_URL_STATISTICS: String = "https://covid-193.p.rapidapi.com/"
-
-const val EXTRAS_KEY_COUNTRY_NAME: String  = "key-country-name"

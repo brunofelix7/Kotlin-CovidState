@@ -1,12 +1,10 @@
 package com.brunofelixdev.kotlincovidstate.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import com.brunofelixdev.kotlincovidstate.R
-import com.brunofelixdev.kotlincovidstate.util.APP_TAG
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 

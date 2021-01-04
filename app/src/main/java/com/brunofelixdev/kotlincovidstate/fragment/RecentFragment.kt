@@ -23,7 +23,6 @@ import com.brunofelixdev.kotlincovidstate.extension.recoveredRate
 import com.brunofelixdev.kotlincovidstate.listener.CountryListener
 import com.brunofelixdev.kotlincovidstate.listener.WorldTotalListener
 import com.brunofelixdev.kotlincovidstate.ui.DetailsActivity
-import com.brunofelixdev.kotlincovidstate.util.EXTRAS_KEY_COUNTRY_NAME
 import com.brunofelixdev.kotlincovidstate.viewmodel.CountryViewModel
 import com.brunofelixdev.kotlincovidstate.viewmodel.CountryViewModel.CountryViewModelFactory
 import com.brunofelixdev.kotlincovidstate.viewmodel.WorldTotalViewModel
@@ -190,7 +189,7 @@ class RecentFragment : Fragment(), WorldTotalListener, CountryListener, KodeinAw
 
     override fun onCountryItemClick(view: View, country: String?) {
         startActivity(Intent(activity, DetailsActivity::class.java).apply {
-            putExtra(EXTRAS_KEY_COUNTRY_NAME, country)
+            putExtra(activity?.resources?.getString(R.string.extras_key_country_name), country)
         })
     }
 
