@@ -5,6 +5,9 @@
     <!-- TAG para o filtrar os logs -->
     <string name="log_tag">tag-covid-state</string>
 
+    <!-- Time out da SplashActivity -->
+    <string name="splash_time_out">2000</string>
+
     <!-- Dados da API -->
     <string name="api_key">d172e810e7msh47584ae043c146dp12d8eejsnb0b3c42c4a59</string>
     <string name="api_url">https://covid-19-data.p.rapidapi.com/</string>
