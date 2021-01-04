@@ -29,9 +29,9 @@ class AppDependencyInject : Application(), KodeinAware {
         bind() from singleton { NetworkConnectionInterceptor(instance()) }
         bind() from singleton { AppDatabase(instance()) }
         bind() from singleton { Api("", instance()) }
-        bind() from singleton { CountryRepository(instance()) }
-        bind() from singleton { CountryDetailsRepository(instance()) }
-        bind() from singleton { WorldTotalRepository(instance()) }
+        bind() from singleton { CountryRepository(instance(), instance()) }
+        bind() from singleton { CountryDetailsRepository(instance(), instance()) }
+        bind() from singleton { WorldTotalRepository(instance(), instance()) }
         bind() from singleton { CountryViewModelFactory(instance()) }
         bind() from singleton { CountryDetailsViewModelFactory(instance()) }
         bind() from singleton { WorldTotalViewModelFactory(instance()) }

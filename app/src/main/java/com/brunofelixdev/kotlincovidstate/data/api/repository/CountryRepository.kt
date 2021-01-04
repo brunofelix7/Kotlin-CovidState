@@ -1,22 +1,27 @@
 package com.brunofelixdev.kotlincovidstate.data.api.repository
 
+import android.content.Context
+import com.brunofelixdev.kotlincovidstate.R
 import com.brunofelixdev.kotlincovidstate.data.api.Api
 import com.brunofelixdev.kotlincovidstate.data.api.SafeApiRequest
 import com.brunofelixdev.kotlincovidstate.data.api.response.CountryResponse
 import com.brunofelixdev.kotlincovidstate.data.api.response.CountryLocationResponse
 import com.brunofelixdev.kotlincovidstate.data.api.interceptor.NetworkConnectionInterceptor
-import com.brunofelixdev.kotlincovidstate.util.API_HOST
-import com.brunofelixdev.kotlincovidstate.util.API_KEY
-import com.brunofelixdev.kotlincovidstate.util.API_URL
 
-class CountryRepository(private val networkConnectionInterceptor: NetworkConnectionInterceptor) :
+class CountryRepository(
+    private val context: Context,
+    private val networkConnectionInterceptor: NetworkConnectionInterceptor
+) :
     SafeApiRequest() {
 
     suspend fun fetchCountries(): List<CountryResponse> {
         return apiRequest {
-            Api(API_URL, networkConnectionInterceptor).fetchAllCountries(
-                API_HOST,
-                API_KEY
+            Api(
+                context.resources.getString(R.string.api_url),
+                networkConnectionInterceptor
+            ).fetchAllCountries(
+                context.resources.getString(R.string.api_host),
+                context.resources.getString(R.string.api_key)
             )
         }
     }
@@ -24,9 +29,12 @@ class CountryRepository(private val networkConnectionInterceptor: NetworkConnect
     suspend fun fetchCountryLocation(): List<CountryLocationResponse> {
         return apiRequest {
             Api(
-                API_URL,
+                context.resources.getString(R.string.api_url),
                 networkConnectionInterceptor
-            ).fetchCountryLocation(API_HOST, API_KEY)
+            ).fetchCountryLocation(
+                context.resources.getString(R.string.api_host),
+                context.resources.getString(R.string.api_key)
+            )
         }
     }
 

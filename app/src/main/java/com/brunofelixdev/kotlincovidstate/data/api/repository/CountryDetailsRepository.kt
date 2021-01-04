@@ -1,20 +1,28 @@
 package com.brunofelixdev.kotlincovidstate.data.api.repository
 
+import android.content.Context
+import com.brunofelixdev.kotlincovidstate.R
 import com.brunofelixdev.kotlincovidstate.data.api.Api
 import com.brunofelixdev.kotlincovidstate.data.api.SafeApiRequest
 import com.brunofelixdev.kotlincovidstate.data.api.interceptor.NetworkConnectionInterceptor
 import com.brunofelixdev.kotlincovidstate.data.api.response.CountryStatisticsData
-import com.brunofelixdev.kotlincovidstate.util.*
 
-class CountryDetailsRepository(private val networkConnectionInterceptor: NetworkConnectionInterceptor) :
+class CountryDetailsRepository(
+    private val context: Context,
+    private val networkConnectionInterceptor: NetworkConnectionInterceptor
+) :
     SafeApiRequest() {
 
     suspend fun fetchCountryStatistics(country: String): CountryStatisticsData {
         return apiRequest {
             Api(
-                API_URL_STATISTICS,
+                context.resources.getString(R.string.api_url_statistics),
                 networkConnectionInterceptor
-            ).fetchCountryStatistics(API_HOST_STATISTICS, API_KEY, country)
+            ).fetchCountryStatistics(
+                context.resources.getString(R.string.api_host_statistics),
+                context.resources.getString(R.string.api_key),
+                country
+            )
         }
     }
 
