@@ -3,11 +3,11 @@ package com.brunofelixdev.kotlincovidstate.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.brunofelixdev.kotlincovidstate.data.api.repository.CountryRepository
+import com.brunofelixdev.kotlincovidstate.handler.ApiException
 import com.brunofelixdev.kotlincovidstate.handler.NoInternetException
 import com.brunofelixdev.kotlincovidstate.listener.CountryListener
 import com.brunofelixdev.kotlincovidstate.listener.CountryLocationListener
 import com.brunofelixdev.kotlincovidstate.util.Coroutines
-import com.google.android.gms.common.api.ApiException
 
 class CountryViewModel(private val repository: CountryRepository) : ViewModel() {
 
