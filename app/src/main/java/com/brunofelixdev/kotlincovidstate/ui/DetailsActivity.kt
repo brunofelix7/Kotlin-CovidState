@@ -3,31 +3,23 @@ package com.brunofelixdev.kotlincovidstate.ui
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.brunofelixdev.kotlincovidstate.R
 import com.brunofelixdev.kotlincovidstate.data.api.response.CountryStatisticsData
 import com.brunofelixdev.kotlincovidstate.databinding.ActivityDetailsBinding
 import com.brunofelixdev.kotlincovidstate.extension.*
 import com.brunofelixdev.kotlincovidstate.listener.CountryDetailsListener
 import com.brunofelixdev.kotlincovidstate.viewmodel.CountryDetailsViewModel
-import com.brunofelixdev.kotlincovidstate.viewmodel.CountryDetailsViewModel.CountryDetailsViewModelFactory
-import org.kodein.di.KodeinAware
-import org.kodein.di.generic.instance
-import org.kodein.di.android.kodein
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DetailsActivity : AppCompatActivity(), CountryDetailsListener, KodeinAware {
-
-    //  DI - Kodein initialize
-    override val kodein by kodein()
+class DetailsActivity : AppCompatActivity(), CountryDetailsListener {
 
     //  ViewBinding
     private lateinit var binding: ActivityDetailsBinding
 
-    private var country: String? = null
-    private var viewModelCountry: CountryDetailsViewModel? = null
+    //  DI - Koin inject
+    private val viewModel : CountryDetailsViewModel by viewModel()
 
-    //  Inject
-    private val factory : CountryDetailsViewModelFactory by instance()
+    private var country: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,14 +35,13 @@ class DetailsActivity : AppCompatActivity(), CountryDetailsListener, KodeinAware
         val view = binding.root
         setContentView(view)
 
-        viewModelCountry = ViewModelProvider(this, factory).get(CountryDetailsViewModel::class.java)
-        viewModelCountry?.listener = this
+        viewModel.listener = this
 
         initializeToolbar()
     }
 
     private fun fetchData() {
-        viewModelCountry?.getStatistics(country ?: "Unknown")
+        viewModel.getStatistics(country ?: "Unknown")
     }
 
     private fun initializeToolbar() {

@@ -1,7 +1,6 @@
 package com.brunofelixdev.kotlincovidstate.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.brunofelixdev.kotlincovidstate.data.api.repository.CountryRepository
 import com.brunofelixdev.kotlincovidstate.handler.ApiException
 import com.brunofelixdev.kotlincovidstate.handler.NoInternetException
@@ -42,12 +41,6 @@ class CountryViewModel(private val repository: CountryRepository) : ViewModel() 
             } catch (e: NoInternetException) {
                 listenerCountryLocation?.onError(e.message ?: "")
             }
-        }
-    }
-
-    class CountryViewModelFactory(private val repository: CountryRepository) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return CountryViewModel(repository) as T
         }
     }
 

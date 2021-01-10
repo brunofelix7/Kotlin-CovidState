@@ -7,21 +7,16 @@ import com.brunofelixdev.kotlincovidstate.R
 import com.brunofelixdev.kotlincovidstate.databinding.ActivityHomeBinding
 import com.brunofelixdev.kotlincovidstate.fragment.MapsFragment
 import com.brunofelixdev.kotlincovidstate.fragment.RecentFragment
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.kodein
-import org.kodein.di.generic.instance
+import org.koin.android.ext.android.inject
 
-class HomeActivity : AppCompatActivity(), KodeinAware {
-
-    //  DI - Kodein initialize
-    override val kodein by kodein()
+class HomeActivity : AppCompatActivity() {
 
     //  ViewBinding
     private lateinit var binding: ActivityHomeBinding
 
-    //  Inject
-    private val recentFragment: RecentFragment by instance()
-    private val mapsFragment: MapsFragment by instance()
+    //  DI - Koin inject
+    private val recentFragment: RecentFragment by inject()
+    private val mapsFragment: MapsFragment by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,5 +47,4 @@ class HomeActivity : AppCompatActivity(), KodeinAware {
             commit()
         }
     }
-
 }
