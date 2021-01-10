@@ -10,7 +10,7 @@ import com.google.android.gms.maps.model.Marker
 
 class MapsInfoWindowAdapter(private val context: Context) : GoogleMap.InfoWindowAdapter {
 
-    private var infoWindow: View = LayoutInflater.from(context).inflate(R.layout.layout_map_info_window, null)
+    private var infoWindow: View = LayoutInflater.from(context).inflate(R.layout.include_map_info_window, null)
 
     private fun infoWindowConfing(marker: Marker, view: View) {
         val markerTitle = marker.title

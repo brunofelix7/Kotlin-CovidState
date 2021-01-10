@@ -2,7 +2,6 @@ package com.brunofelixdev.kotlincovidstate.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.brunofelixdev.kotlincovidstate.R
 import com.brunofelixdev.kotlincovidstate.databinding.ActivityHomeBinding
@@ -14,9 +13,11 @@ import org.kodein.di.generic.instance
 
 class HomeActivity : AppCompatActivity(), KodeinAware {
 
+    //  DI - Kodein initialize
     override val kodein by kodein()
 
-    private var binding: ActivityHomeBinding? = null
+    //  ViewBinding
+    private lateinit var binding: ActivityHomeBinding
 
     //  Inject
     private val recentFragment: RecentFragment by instance()
@@ -24,14 +25,19 @@ class HomeActivity : AppCompatActivity(), KodeinAware {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fragmentsConfig()
+        initializeViews()
+        initializeFragments()
     }
 
-    private fun fragmentsConfig() {
-        makeCurrentFragment(recentFragment)
+    private fun initializeViews() {
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+    }
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
-        binding?.navMenu?.setOnNavigationItemSelectedListener { item ->
+    private fun initializeFragments() {
+        makeCurrentFragment(recentFragment)
+        binding.navMenu.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_recent -> makeCurrentFragment(recentFragment)
                 R.id.nav_maps -> makeCurrentFragment(mapsFragment)

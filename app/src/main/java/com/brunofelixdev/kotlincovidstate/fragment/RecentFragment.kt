@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,25 +32,34 @@ import org.kodein.di.android.x.kodein
 
 class RecentFragment : Fragment(), WorldTotalListener, CountryListener, KodeinAware {
 
+    //  DI - Kodein initialize
     override val kodein by kodein()
 
-    private var binding: FragmentRecentBinding? = null
+    //  ViewBinding
+    private var _binding: FragmentRecentBinding? = null
+    private val binding: FragmentRecentBinding get() = _binding!!
+
     private var viewModel: CountryViewModel? = null
     private var viewModelWorldTotal: WorldTotalViewModel? = null
     private var isSearched: Boolean = false
     private var displayCountryList = ArrayList<CountryResponse>()
     private lateinit var appContext: Context
 
-    //  Inject
+    //  DI - Kodein inject
     private val countryFactory : CountryViewModelFactory by instance()
     private val worldTotalFactory : WorldTotalViewModelFactory by instance()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recent, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentRecentBinding.inflate(inflater, container, false)
         initObjects()
         toolbarConfig()
         searchConfig()
-        return binding?.root
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun initObjects() {

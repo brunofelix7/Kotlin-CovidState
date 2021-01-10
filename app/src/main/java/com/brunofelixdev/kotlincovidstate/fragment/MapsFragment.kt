@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.brunofelixdev.kotlincovidstate.R
@@ -31,26 +30,35 @@ import org.kodein.di.android.x.kodein
 
 class MapsFragment : Fragment(), OnMapReadyCallback, CountryLocationListener, KodeinAware {
 
+    //  DI - Kodein initialize
     override val kodein by kodein()
 
-    private var binding: FragmentMapsBinding? = null
+    //  ViewBinding
+    private var _binding: FragmentMapsBinding? = null
+    private val binding: FragmentMapsBinding get() = _binding!!
+
     private var mapFragment: SupportMapFragment? = null
     private var viewModel: CountryViewModel? = null
     private lateinit var mMap: GoogleMap
     private lateinit var appContext: Context
 
-    //  Inject
+    //  DI - Kodein inject
     private val factory : CountryViewModelFactory by instance()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_maps, container, false)
-        return binding?.root
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentMapsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -115,7 +123,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, CountryLocationListener, Ko
     }
 
     override fun onStarted() {
-        binding?.progress?.visibility = View.VISIBLE
+        binding.progress.visibility = View.VISIBLE
     }
 
     override fun onSuccess(data: List<CountryLocationResponse>?) {
@@ -134,11 +142,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback, CountryLocationListener, Ko
                 }
             }
         }
-        binding?.progress?.visibility = View.GONE
+        binding.progress.visibility = View.GONE
     }
 
     override fun onError(message: String) {
-        binding?.progress?.visibility = View.GONE
+        binding.progress.visibility = View.GONE
         activity?.toast(message)
     }
 

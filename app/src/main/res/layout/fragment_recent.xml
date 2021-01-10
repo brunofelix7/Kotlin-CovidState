@@ -9,7 +9,7 @@
 
     <include
         android:id="@+id/include_toolbar"
-        layout="@layout/layout_toolbar" />
+        layout="@layout/include_toolbar" />
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/country_search"
@@ -30,7 +30,7 @@
 
         <include
             android:id="@+id/include_cards"
-            layout="@layout/layout_cards_info" />
+            layout="@layout/include_cards_info" />
 
     </LinearLayout>
 
@@ -42,7 +42,7 @@
         android:layout_marginEnd="12dp"
         android:orientation="vertical">
 
-        <include layout="@layout/layout_header_list" />
+        <include layout="@layout/include_header_list" />
 
     </LinearLayout>
 
@@ -55,7 +55,7 @@
 
     <include
         android:id="@+id/include_oops"
-        layout="@layout/layout_oops_screen"
+        layout="@layout/include_oops_screen"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -73,7 +73,7 @@
 
     <include
         android:id="@+id/include_footer"
-        layout="@layout/layout_footer_last_update"
+        layout="@layout/include_footer_last_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom" />
