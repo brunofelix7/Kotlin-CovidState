@@ -59,7 +59,6 @@ class RecentFragment : Fragment(), WorldTotalListener, CountryListener, KodeinAw
         viewModel = ViewModelProvider(this, countryFactory).get(CountryViewModel::class.java)
         viewModelWorldTotal = ViewModelProvider(this, worldTotalFactory).get(WorldTotalViewModel::class.java)
 
-        binding?.viewModel = viewModel
         viewModel?.listener = this
         viewModelWorldTotal?.listener = this
 

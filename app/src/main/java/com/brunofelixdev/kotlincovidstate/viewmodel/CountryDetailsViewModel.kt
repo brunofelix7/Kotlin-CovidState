@@ -10,17 +10,6 @@ import com.brunofelixdev.kotlincovidstate.util.Coroutines
 
 class CountryDetailsViewModel(private val repository: CountryDetailsRepository) : ViewModel() {
 
-    var confirmed: String? = null
-    var activeCases: String? = null
-    var newCases: String? = null
-    var recovered: String? = null
-    var critical: String? = null
-    var deaths: String? = null
-    var newDeaths: String? = null
-    var testsDone: String? = null
-    var fatalityRate: String? = null
-    var recoveredRate: String? = null
-
     var listener: CountryDetailsListener? = null
 
     fun getStatistics(country: String) {

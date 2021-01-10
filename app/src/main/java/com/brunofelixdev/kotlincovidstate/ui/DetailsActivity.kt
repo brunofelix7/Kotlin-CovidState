@@ -41,7 +41,6 @@ class DetailsActivity : AppCompatActivity(), CountryDetailsListener, KodeinAware
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details)
         viewModelCountry = ViewModelProvider(this, factory).get(CountryDetailsViewModel::class.java)
 
-        binding?.viewModel = viewModelCountry
         viewModelCountry?.listener = this
     }
 
